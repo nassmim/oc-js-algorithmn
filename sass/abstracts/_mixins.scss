@@ -1,0 +1,12 @@
+$breakpoints: (
+  'tablet': 768px,
+  'desktop': 1024px,
+);
+
+// Permettra de spécifier les règles css pour les devices autres que mobiles
+// La variable content sera remplacé par les propriétés/valeurs css 
+@mixin not-mobile {
+  @media screen and (min-width: map-get($breakpoints, tablet)) {
+    @content
+  }
+};

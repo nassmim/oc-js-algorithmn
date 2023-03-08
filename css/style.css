@@ -1,0 +1,11 @@
+
+
+
+.filters {
+    display: flex;
+    column-gap: 20px;
+}
+
+filter-dropdown--ingredients {
+
+}
