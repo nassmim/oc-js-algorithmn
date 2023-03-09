@@ -1,13 +1,14 @@
+@use "../abstracts";
+
 .search-main {
-    
+    position: relative;
     height: 70px;
 
     &__input {
         background: #E7E7E7;
-        font-family: 'Lato', sans-serif;
 
         &::placeholder {
-            font-size: 18px;
+            font-size: abstracts.get-rem-value(18);
             font-weight: 400;
             color: #adadad;
         }
@@ -53,4 +54,8 @@
     }
 }   
 
-
+.recipes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 4%;
+}

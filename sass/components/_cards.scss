@@ -1,0 +1,52 @@
+@use "../abstracts";
+
+.card {
+
+    max-width: 380px;
+    background-color: #E7E7E7;
+
+    &__link--image {
+        display: flex;
+        width: 100%;
+    }
+
+    &__image {
+        width: 100%;
+        aspect-ratio: 2.13;
+        object-fit: cover;
+    }
+
+    &__body {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        row-gap: 20px;
+        padding: 20px 20px;
+    }
+
+    &__title {
+        font-size: abstracts.get-rem-value(18);
+        font-weight: 400;
+    }
+
+    &__duration-information {
+        display: flex;
+        column-gap: 10px;
+        justify-self: end;
+    }
+
+    &__duration {
+        font-size: abstracts.get-rem-value(18);
+        font-weight: 700;
+    }
+
+    &__ingredients {
+        font-size: abstracts.get-rem-value(12);
+        font-weight: 400;
+    }
+
+    &__cooking-steps {
+        font-family: 'Roboto';
+        font-size: abstracts.get-rem-value(12);
+        font-weight: 400;
+    }
+}

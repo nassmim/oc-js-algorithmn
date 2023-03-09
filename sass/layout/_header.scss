@@ -1,10 +1,16 @@
 .home-header {
+    display: flex;
+    justify-content: center;
     padding: 40px 0 20px 0;
-}
 
-.header__title {
-    color: #D04F4F;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 36px;
-    font-weight: 700;
+    &__logo {
+        row-gap: 10px;
+    }
+
+    &__title {
+        color: #D04F4F;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 36px;
+        font-weight: 700;
+    }
 }
