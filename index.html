@@ -31,14 +31,14 @@
                 class="d-flex flex-column align-items-center gap-2 text-decoration-none"
             >
                 <img src="assets/images/logo.png" alt="Logo du site Les petits plats">
-                <h1 class="mt-0 mb-0 header__title fs-2">Les petits plats</h1>
+                <h1 class="mt-0 mb-0 header__title">Les petits plats</h1>
             </a>
 
         </header>
 
         <main>
             
-            <form class="mb-2 position-relative search-main">
+            <form class="position-relative search-main container--search-main">
                 <input 
                     type="search" 
                     name="search-recipe" 
@@ -51,10 +51,832 @@
                 </i>
             </form>
 
-            <div class="filters">
+            <div class="filters container--filters">
 
-                <div class="filter-dropdown filter-dropdown--ingredients">
-                    <input type="button" value="Ingrédients" class="filter-dropdown__input" name="ingredients">
+                <div class="filters__tags container--filters__tags">
+
+                    <div class="tag">
+                        <p class="tag__name">Coco</p>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_51_0)">
+                            <path d="M14.59 8L12 10.59L9.41 8L8 9.41L10.59 12L8 14.59L9.41 16L12 13.41L14.59 16L16 14.59L13.41 12L16 9.41L14.59 8ZM12 2C6.47 2 2 6.47 2 12C2 17.53 6.47 22 12 22C17.53 22 22 17.53 22 12C22 6.47 17.53 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z" fill="white"/>
+                            </g>
+                            <defs>
+                            <clipPath id="clip0_51_0">
+                            <rect width="24" height="24" fill="white"/>
+                            </clipPath>
+                            </defs>
+                        </svg>
+                    </div>
+
+                </div>
+
+                <div class="filters__dropdowns">
+
+                    <div class="filter-dropdown filter-dropdown--ingredients btn">
+
+                        <div class="filter-dropdown__button">
+                            <input 
+                                class="filter-dropdown__input" 
+                                type="button" 
+                                name="ingredients"
+                                value="Ingrédients" 
+                                placeholder="Rechercher un ingrédient"
+                            >
+                            <svg 
+                                class="filter-dropdown__arrow"
+                                width="16" 
+                                height="11" 
+                                viewBox="0 0 16 11" 
+                                fill="none" 
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path d="M14.12 0.453369L8 6.56004L1.88 0.453369L0 2.33337L8 10.3334L16 2.33337L14.12 0.453369Z" fill="white"/>
+                            </svg>
+                        </div>
+                          
+                        <ul class="filter-dropdown__tags-list">
+                                <li class="filter-dropdown__tag">Lait de coco</li>
+                      
+                                <li class="filter-dropdown__tag">Jus de citron</li>
+                      
+                                <li class="filter-dropdown__tag">Crème de coco</li>
+                      
+                                <li class="filter-dropdown__tag">Sucre</li>
+                      
+                                <li class="filter-dropdown__tag">Glaçons</li>
+                      
+                                <li class="filter-dropdown__tag">Thon rouge (ou blanc)</li>
+                      
+                                <li class="filter-dropdown__tag">Concombre</li>
+                      
+                                <li class="filter-dropdown__tag">Tomate</li>
+                      
+                                <li class="filter-dropdown__tag">Carotte</li>
+                      
+                                <li class="filter-dropdown__tag">Citron vert</li>
+                      
+                                <li class="filter-dropdown__tag">Poulet</li>
+                      
+                                <li class="filter-dropdown__tag">Coulis de tomate</li>
+                      
+                                <li class="filter-dropdown__tag">Oignon</li>
+                      
+                                <li class="filter-dropdown__tag">Poivron rouge</li>
+                      
+                                <li class="filter-dropdown__tag">Huile d'olive</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Riz blanc</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Thon en miettes</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Oeuf dur</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Maïs</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Vinaigrette</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pâte feuilletée</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Crème fraîche</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Gruyère râpé</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Moutarde de dijon</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pâte brisée</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pomme</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Oeuf</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Sucre en poudre</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Sucre vanillé</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pâte sablée</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Chocolat au lait</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Crème liquide</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Beurre</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Fraise</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Noix</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Chocolat noir</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Farine</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Olives</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Fromage de chèvre</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Vinaigre balsamic</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Basilic</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Reblochon</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pommes de terre</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Jambon fumé</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Vin blanc sec</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Tomates cerises</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Mozzarella</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Jambon de parme</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pommes</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Salade verte</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Rhubarbe</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Eau</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Mâche</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Échalote</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Vinaigre de cidre</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Saucisse bretonne ou de toulouse</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Farine de blé noir</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Fromage à raclette</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Lait</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Beurre salé</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Banane</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pennes</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Huile d'olives</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pastèque</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Menthe</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Ananas</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Glace à la vanille</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Kiwi</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Citron</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Sucre glace</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Tagliatelles</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Lardons</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Parmesan</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Spaghettis</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Viande hachée 1% de matière grasse</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Vin rouge</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Macaronis</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Mayonnaise</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Chocolat noir en pépites</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Ail</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Oseille</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Vermicelles</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Poireau</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pois chiches</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Paprika</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pois cassé</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Haricots verts</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Petits poids</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pain de mie</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Blanc de dinde</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Emmental</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Gruyère</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Noix de muscade</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Saumon fumé</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Feuilles de laitue</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Fromage blanc</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Patate douce</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Orange</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Cumin</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Courgette</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Lasagnes</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Maïzena</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Viande hachée</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Coulis de tomates</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pain</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Sucre roux</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Bicarbonate</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Chocolat</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Poires au jus</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Boudoirs</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Beurre fondu</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pruneaux</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Mascarpone</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pâte à pizza</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Tomates pelées</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Champignons de paris</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Bananes</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Kiwis</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Mangue</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Miel</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Poudre d'amendes</li>
+                        </ul>
+
+                    </div>
+
+                    <div class="filter-dropdown filter-dropdown--devices btn">
+
+                        <div class="filter-dropdown__button">
+                            <input 
+                                class="filter-dropdown__input" 
+                                type="button" 
+                                name="ingredients"
+                                value="Ingrédients" 
+                                placeholder="Rechercher un ingrédient"
+                            >
+                            <svg 
+                                class="filter-dropdown__arrow"
+                                width="16" 
+                                height="11" 
+                                viewBox="0 0 16 11" 
+                                fill="none" 
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path d="M14.12 0.453369L8 6.56004L1.88 0.453369L0 2.33337L8 10.3334L16 2.33337L14.12 0.453369Z" fill="white"/>
+                            </svg>
+                        </div>
+                          
+                        <ul class="filter-dropdown__tags-list">
+                                <li class="filter-dropdown__tag">Lait de coco</li>
+                      
+                                <li class="filter-dropdown__tag">Jus de citron</li>
+                      
+                                <li class="filter-dropdown__tag">Crème de coco</li>
+                      
+                                <li class="filter-dropdown__tag">Sucre</li>
+                      
+                                <li class="filter-dropdown__tag">Glaçons</li>
+                      
+                                <li class="filter-dropdown__tag">Thon rouge (ou blanc)</li>
+                      
+                                <li class="filter-dropdown__tag">Concombre</li>
+                      
+                                <li class="filter-dropdown__tag">Tomate</li>
+                      
+                                <li class="filter-dropdown__tag">Carotte</li>
+                      
+                                <li class="filter-dropdown__tag">Citron vert</li>
+                      
+                                <li class="filter-dropdown__tag">Poulet</li>
+                      
+                                <li class="filter-dropdown__tag">Coulis de tomate</li>
+                      
+                                <li class="filter-dropdown__tag">Oignon</li>
+                      
+                                <li class="filter-dropdown__tag">Poivron rouge</li>
+                      
+                                <li class="filter-dropdown__tag">Huile d'olive</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Riz blanc</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Thon en miettes</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Oeuf dur</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Maïs</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Vinaigrette</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pâte feuilletée</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Crème fraîche</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Gruyère râpé</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Moutarde de dijon</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pâte brisée</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pomme</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Oeuf</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Sucre en poudre</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Sucre vanillé</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pâte sablée</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Chocolat au lait</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Crème liquide</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Beurre</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Fraise</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Noix</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Chocolat noir</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Farine</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Olives</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Fromage de chèvre</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Vinaigre balsamic</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Basilic</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Reblochon</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pommes de terre</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Jambon fumé</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Vin blanc sec</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Tomates cerises</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Mozzarella</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Jambon de parme</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pommes</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Salade verte</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Rhubarbe</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Eau</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Mâche</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Échalote</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Vinaigre de cidre</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Saucisse bretonne ou de toulouse</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Farine de blé noir</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Fromage à raclette</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Lait</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Beurre salé</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Banane</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pennes</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Huile d'olives</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pastèque</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Menthe</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Ananas</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Glace à la vanille</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Kiwi</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Citron</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Sucre glace</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Tagliatelles</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Lardons</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Parmesan</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Spaghettis</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Viande hachée 1% de matière grasse</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Vin rouge</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Macaronis</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Mayonnaise</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Chocolat noir en pépites</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Ail</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Oseille</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Vermicelles</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Poireau</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pois chiches</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Paprika</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pois cassé</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Haricots verts</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Petits poids</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pain de mie</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Blanc de dinde</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Emmental</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Gruyère</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Noix de muscade</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Saumon fumé</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Feuilles de laitue</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Fromage blanc</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Patate douce</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Orange</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Cumin</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Courgette</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Lasagnes</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Maïzena</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Viande hachée</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Coulis de tomates</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pain</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Sucre roux</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Bicarbonate</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Chocolat</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Poires au jus</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Boudoirs</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Beurre fondu</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pruneaux</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Mascarpone</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pâte à pizza</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Tomates pelées</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Champignons de paris</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Bananes</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Kiwis</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Mangue</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Miel</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Poudre d'amendes</li>
+                        </ul>
+
+                    </div>
+
+                    <div class="filter-dropdown filter-dropdown--cookware btn">
+
+                        <div class="filter-dropdown__button">
+                            <input 
+                                class="filter-dropdown__input" 
+                                type="button" 
+                                name="ingredients"
+                                value="Ingrédients" 
+                                placeholder="Rechercher un ingrédient"
+                            >
+                            <svg 
+                                class="filter-dropdown__arrow"
+                                width="16" 
+                                height="11" 
+                                viewBox="0 0 16 11" 
+                                fill="none" 
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path d="M14.12 0.453369L8 6.56004L1.88 0.453369L0 2.33337L8 10.3334L16 2.33337L14.12 0.453369Z" fill="white"/>
+                            </svg>
+                        </div>
+                          
+                        <ul class="filter-dropdown__tags-list">
+                                <li class="filter-dropdown__tag">Lait de coco</li>
+                      
+                                <li class="filter-dropdown__tag">Jus de citron</li>
+                      
+                                <li class="filter-dropdown__tag">Crème de coco</li>
+                      
+                                <li class="filter-dropdown__tag">Sucre</li>
+                      
+                                <li class="filter-dropdown__tag">Glaçons</li>
+                      
+                                <li class="filter-dropdown__tag">Thon rouge (ou blanc)</li>
+                      
+                                <li class="filter-dropdown__tag">Concombre</li>
+                      
+                                <li class="filter-dropdown__tag">Tomate</li>
+                      
+                                <li class="filter-dropdown__tag">Carotte</li>
+                      
+                                <li class="filter-dropdown__tag">Citron vert</li>
+                      
+                                <li class="filter-dropdown__tag">Poulet</li>
+                      
+                                <li class="filter-dropdown__tag">Coulis de tomate</li>
+                      
+                                <li class="filter-dropdown__tag">Oignon</li>
+                      
+                                <li class="filter-dropdown__tag">Poivron rouge</li>
+                      
+                                <li class="filter-dropdown__tag">Huile d'olive</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Riz blanc</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Thon en miettes</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Oeuf dur</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Maïs</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Vinaigrette</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pâte feuilletée</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Crème fraîche</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Gruyère râpé</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Moutarde de dijon</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pâte brisée</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pomme</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Oeuf</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Sucre en poudre</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Sucre vanillé</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pâte sablée</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Chocolat au lait</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Crème liquide</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Beurre</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Fraise</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Noix</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Chocolat noir</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Farine</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Olives</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Fromage de chèvre</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Vinaigre balsamic</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Basilic</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Reblochon</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pommes de terre</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Jambon fumé</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Vin blanc sec</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Tomates cerises</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Mozzarella</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Jambon de parme</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pommes</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Salade verte</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Rhubarbe</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Eau</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Mâche</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Échalote</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Vinaigre de cidre</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Saucisse bretonne ou de toulouse</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Farine de blé noir</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Fromage à raclette</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Lait</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Beurre salé</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Banane</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pennes</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Huile d'olives</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pastèque</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Menthe</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Ananas</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Glace à la vanille</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Kiwi</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Citron</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Sucre glace</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Tagliatelles</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Lardons</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Parmesan</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Spaghettis</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Viande hachée 1% de matière grasse</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Vin rouge</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Macaronis</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Mayonnaise</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Chocolat noir en pépites</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Ail</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Oseille</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Vermicelles</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Poireau</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pois chiches</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Paprika</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pois cassé</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Haricots verts</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Petits poids</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pain de mie</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Blanc de dinde</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Emmental</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Gruyère</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Noix de muscade</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Saumon fumé</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Feuilles de laitue</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Fromage blanc</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Patate douce</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Orange</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Cumin</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Courgette</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Lasagnes</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Maïzena</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Viande hachée</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Coulis de tomates</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pain</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Sucre roux</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Bicarbonate</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Chocolat</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Poires au jus</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Boudoirs</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Beurre fondu</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pruneaux</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Mascarpone</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Pâte à pizza</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Tomates pelées</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Champignons de paris</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Bananes</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Kiwis</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Mangue</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Miel</li>
+                      
+                                <li class="filter-dropdown__tag hidden-by-main-search">Poudre d'amendes</li>
+                        </ul>
+
+                    </div>
+
                 </div>
 
             </div>

@@ -1,0 +1,81 @@
+@use "../abstracts";
+
+.filter-dropdown {
+    $filterDropdown: &;
+
+    display: grid;
+
+    width: 13%;
+    height: 69px;
+    border-radius: 5px;
+
+    transition: width 350ms ease-out;
+    
+    &.btn {
+        padding: 25px 18px;
+    }
+
+    &__button {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__input {
+        background-color: rgba(0, 0, 0, 0);    
+        border: none;
+        color: #ffff;
+        font-size: abstracts.get-rem-value(18);
+        padding: 0;
+    }
+    
+    &__tags-list {
+        display: none;
+    }
+
+    &__tag {
+        justify-self: flex-start;
+    }
+
+    &--open {
+        width: 667px;
+        height: auto;
+        row-gap: 30px;
+
+        #{$filterDropdown} {
+            
+            &__arrow {
+                animation: rotate-arrow ease-in-out 100ms forwards;
+            }
+
+            &__tags-list {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                row-gap: 15px;
+                color: #ffffff;
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+            }            
+        }
+
+    }
+
+    &--ingredients {
+        background-color: #3283f7;
+    }
+
+    &--devices {
+        background-color: #68d9a4;
+    }
+
+    &--cookware {
+        background-color: #ED6454;
+    }
+} 
+
+@keyframes rotate-arrow {
+    100% {
+        transform: rotate(180deg)
+    }
+}

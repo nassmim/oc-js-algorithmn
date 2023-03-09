@@ -1,5 +1,5 @@
 .search-main {
-
+    
     height: 70px;
 
     &__input {
@@ -7,6 +7,8 @@
         font-family: 'Lato', sans-serif;
 
         &::placeholder {
+            font-size: 18px;
+            font-weight: 400;
             color: #adadad;
         }
     }
@@ -14,43 +16,41 @@
 
 .filters {
     display: flex;
-    column-gap: 20px;
+    flex-direction: column;
+    row-gap: 15px;
+
+
+    &__tags {
+        display: flex;
+        
+        &--visible {
+            display: flex;
+            column-gap: 1.5%; 
+        }
+    }
+
+    &__dropdowns {
+        display: flex;
+        column-gap: 1.5%;        
+    }    
+
 }
 
-.filter-dropdown {
+.tag {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    column-gap: 12px;
 
-    width: 13%;
-    height: 69px;
+    background-color: #3283f7;
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
     border-radius: 5px;
+    padding: 10px 20px;
 
-    &::after {
-        content: '';
-        display: inline-block;
-        width: .5rem;
-        height: .5rem;
-        border-top: 1px solid #ffffff;
-        border-right: 1px solid #ffffff;
-        border-top-right-radius: 2px;
-        transform: rotate(135deg);
-        transform-origin: center center;
-        transition: transform ease-in-out 100ms
+    &__name {
+        margin: 0;
     }
+}   
 
-    &__input {
-        background-color: rgba(0, 0, 0, 0);    
-        border: none;
-        color: #ffff;
-        font-size: 18px;
-    }
 
-    &--ingredients {
-        background-color: #3283f7;
-    }
-} 
-
-.custom-select__option--open:after  {
-    transform: rotate(315deg);
-}
