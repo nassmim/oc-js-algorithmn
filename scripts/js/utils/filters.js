@@ -103,10 +103,11 @@ function setFilterDropdownsBehaviour() {
 
     filterDropdownsArray.forEach((filterDropdown, index) => {
 
-        const inputElement = filterDropdown.querySelector('.filter-dropdown__input')
+        const inputElement = filterDropdown.querySelector('.filter-dropdown__input'),
+            inputName = inputElement.name
 
         // Crée la liste de tags associée au filtre
-        createFilterDropdownTagsList(filterDropdown, tagsPerType[inputElement.name])
+        createFilterDropdownTagsList(filterDropdown, tagsPerType[inputName])
 
         filterDropdown.addEventListener('click', (e) => {
 
@@ -148,7 +149,8 @@ function setFilterDropdownsBehaviour() {
         });
 
         // Définit ce qu'il doit se passer lorsque l'utilisateur tape du texte dans l'input du filtre
-        setFilterDropdownInputBehaviour(filterDropdown, inputElement)
+        const tagElements = filterDropdown.querySelectorAll('.filter-dropdown__tag')
+        setFilterDropdownInputBehaviour(inputElement, tagElements)
         
     });
 }
@@ -233,7 +235,8 @@ function closeOtherFilterDropdowns(filterDropdown) {
                 /* On réitinialise la liste de tags associé à ce filtre que l'on ferme 
                 pour qu'à la nouvelle ouverture de celui-ci, l'utilisateur voie la liste complète
                 */
-                createFilterDropdownTagsList(element, tagsPerType[inputElement.name])
+                const tagElements = element.querySelectorAll('.filter-dropdown__tag')
+                showAllTags(tagElements)
             }
         } 
 
@@ -336,27 +339,63 @@ function setTagElementBehaviour(tagElement, tagName) {
     Renvoie :
         - Rien
 */
-function setFilterDropdownInputBehaviour(filterDropdown, inputElement) {
+function setFilterDropdownInputBehaviour(inputElement, tagElements) {
 
     inputElement.addEventListener('input', () => {
 
-        const inputValue = inputElement.value,
-            inputName = inputElement.name
+        const listOfTags = Array.from(tagElements)
+
+        const inputValue = inputElement.value
  
         if(inputValue.length >= 3) {
         // L'utilisateur a tapé plus de trois lettres, on estime que c'est pertinent de lancer la recherche des tags 
     
-            const regexToMatch = new RegExp(inputValue, 'i')
-            const matchedTags = tagsPerType[inputName].filter(tag => tag.match(regexToMatch))
+            const regexToMatch = new RegExp('\^' + inputValue, 'i')
+            // const matchedTags = tagsPerType[inputName].filter(tag => tag.includes(inputValue))
+            // const matchedTagElements = filterTags(tagsToDisplay, regexToMatch, true)
+            // const unmatchedTagElements = filterTags(tagsToDisplay, regexToMatch, false)
             
             // On crée de nouveau la liste de tags contenant seulement les tags retenus
-            createFilterDropdownTagsList(filterDropdown, matchedTags)
-    
-        } else createFilterDropdownTagsList(filterDropdown, tagsPerType[inputName]) // La liste complète de tags doit être affichée
+            // createFilterDropdownTagsList(filterDropdown, matchedTags)
+            showHideTags(listOfTags, regexToMatch)
+
+        } else showAllTags(listOfTags) // La liste complète de tags doit être affichée
 
     })
 
 }
 
 
-export { setFilterDropdownsBehaviour }
+/* Affiche ou cache les tags en fonction de la recherche effectuée par l'utilisateur
+    Paramètres :
+        - Une liste de tags initiale
+        - Le texte de recherche de l'utilisateur
+    Renvoie :
+        - Rien
+*/
+function showHideTags(listOfTags, regexToMatch) {
+
+    listOfTags.forEach(tagElement => {
+
+        const tagName = tagElement.textContent
+
+        if(tagName.match(regexToMatch)) tagElement.style.display = 'block'
+        else tagElement.style.display = 'none'
+        
+    })
+
+}
+
+
+/* Affiche tous les tags 
+    Paramètres :
+        - Une liste de tags initiale
+    Renvoie :
+        - Rien
+*/
+function showAllTags(listOfTags) {
+    listOfTags.forEach(tagElement => tagElement.style.display = 'block')
+}
+
+
+export { setFilterDropdownsBehaviour, setFilterDropdownInputBehaviour }
