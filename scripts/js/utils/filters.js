@@ -31,6 +31,7 @@ const tagsPerType = {
     "ustensils": ustensilsTags,
 }
 
+
 /** **************************** FUNCTIONS **************************************** */
 /** ******************************************************************** */
 
@@ -99,6 +100,10 @@ function setFilterDropdownsBehaviour() {
 
     filterDropdownsArray.forEach((filterDropdown, index) => {
 
+        const inputElement = filterDropdown.querySelector('.filter-dropdown__input')
+
+        createFilterDropdownTagsList(filterDropdown, tagsPerType[inputElement.name])
+
         filterDropdown.addEventListener('click', (e) => {
 
             const clickedElement = e.target
@@ -122,14 +127,14 @@ function setFilterDropdownsBehaviour() {
                     } 
 
                     // L'utilisateur désire fermer le filtre
-                    else closeFilterDropdown(filterDropdown, inputsInitialValues[index]) 
+                    else closeFilterDropdown(filterDropdown, inputElement, inputsInitialValues[index]) 
 
-                } else closeFilterDropdown(filterDropdown, inputsInitialValues[index]) 
+                } else closeFilterDropdown(filterDropdown, inputElement, inputsInitialValues[index]) 
 
             } else {
             // Le bouton n'est pas encore ouvert, l'utilisateur veut donc l'ouvrir
 
-                openFilterDropdown(filterDropdown)
+                openFilterDropdown(filterDropdown, inputElement)
 
                 // Les autres dropdown de filtre doivent être fermés
                 closeOtherFilterDropdowns(filterDropdown)
@@ -142,6 +147,19 @@ function setFilterDropdownsBehaviour() {
 }
 
 
+function createFilterDropdownTagsList(filterDropdown, listOfTags) {
+
+    const tagsListElement = filterDropdown.querySelector('.filter-dropdown__tags-list')
+    tagsListElement.innerHTML = ''
+    // tagsListElement.parentNote.removeChild(tagsListElement)
+    
+    listOfTags.forEach(tag => {
+        const tagElement = `<li class="filter-dropdown__tag">${tag}</li>`
+        tagsListElement.insertAdjacentHTML('beforeend', tagElement)
+    })
+}
+
+
 /* Définit les actions à réaliser à la fermeture du dropdown de filtre
     Paramètres :
         - Un élément HTML correspondant au filtre de tags
@@ -149,12 +167,11 @@ function setFilterDropdownsBehaviour() {
     Renvoie :
         - Rien
 */
-function closeFilterDropdown(filterDropdown, inputInitialValue) {
+function closeFilterDropdown(filterDropdown, inputElement, inputInitialValue) {
 
     filterDropdown.classList.remove('filter-dropdown--open')
 
-    // Récupération de l'input associé à ce filtre pour lui rétablir les bons attribut/valeur
-    const inputElement = filterDropdown.querySelector('.filter-dropdown__input')
+    // On rétablit les bons attribut/valeur à l'input
     setFilterDropdownInputAttribute(inputElement, 'button')
     inputElement.setAttribute('value', inputInitialValue)
 }
@@ -166,14 +183,13 @@ function closeFilterDropdown(filterDropdown, inputInitialValue) {
     Renvoie :
         - Rien
 */
-function openFilterDropdown(filterDropdown) {
+function openFilterDropdown(filterDropdown, inputElement) {
 
     filterDropdown.classList.add('filter-dropdown--open')
 
     /* Lorsque le dropdown est fermé, on a un input de type bouton, 
     il faut le changer en text pour permettre à l'utilisateur de taper sa recherche
     */
-    const inputElement = filterDropdown.querySelector('.filter-dropdown__input')
     setFilterDropdownInputAttribute(inputElement, 'text') 
     inputElement.focus()   
 
@@ -190,7 +206,8 @@ function closeOtherFilterDropdowns(filterDropdown) {
     filterDropdownsArray.forEach((element, index) => {
 
         if(element !== filterDropdown) {
-            closeFilterDropdown(element, inputsInitialValues[index])
+            const inputElement = element.querySelector('.filter-dropdown__input')
+            closeFilterDropdown(element, inputElement, inputsInitialValues[index])
         } 
 
     })
