@@ -21,6 +21,7 @@ let tagsSelectedNames = []
 
 const inputsInitialValues = ['Ingrédients', 'Appareils', 'Ustensils']
 
+// Récupère pour chaque dropdown tous les tags initiaux à montrer 
 const ingredientsTags = getAllTags('ingredients')
 const applianceTags = getAllTags('appliance')
 const ustensilsTags = getAllTags('ustensils')
@@ -57,6 +58,7 @@ function getAllTags(tagType) {
 }
 
 
+
 /* Récupère les tags associés à une recette et à un type de tags
 On considère que la structure de données reste identique 
     Paramètres :
@@ -83,9 +85,10 @@ function getRightTypeTags(recipe, tagType) {
             tags = recipe['appliance']
     }
 
-    const listOfTags = Array.isArray(tags) ? tags : [tags]
+    const listOfTags = Array.isArray(tags) ? tags : [tags],
+        listOfUniqueTags = listOfTags.map(tag => tag.toLowerCase())
 
-    return listOfTags
+    return listOfUniqueTags
 
 }
 
@@ -102,6 +105,7 @@ function setFilterDropdownsBehaviour() {
 
         const inputElement = filterDropdown.querySelector('.filter-dropdown__input')
 
+        // Crée la liste de tags associée au filtre
         createFilterDropdownTagsList(filterDropdown, tagsPerType[inputElement.name])
 
         filterDropdown.addEventListener('click', (e) => {
@@ -142,11 +146,21 @@ function setFilterDropdownsBehaviour() {
             }
 
         });
+
+        // Définit ce qu'il doit se passer lorsque l'utilisateur tape du texte dans l'input du filtre
+        setFilterDropdownInputBehaviour(filterDropdown, inputElement)
         
     });
 }
 
 
+/* Crée l'élement HTML contenant une liste de tags associée à un filtre 
+    Paramètres :
+        - Un élément correspondant au filtre
+        - Une liste de tags
+    Renvoie :
+        - Rien
+*/
 function createFilterDropdownTagsList(filterDropdown, listOfTags) {
 
     const tagsListElement = filterDropdown.querySelector('.filter-dropdown__tags-list')
@@ -195,7 +209,7 @@ function openFilterDropdown(filterDropdown, inputElement) {
 
 }
 
-/* Ferme les éléments de filtre par tags 
+/* Ferme les filtres non utilisés
     Paramètres :
         - Le filtre ouvert par l'utilisateur
     Renvoie :
@@ -206,8 +220,21 @@ function closeOtherFilterDropdowns(filterDropdown) {
     filterDropdownsArray.forEach((element, index) => {
 
         if(element !== filterDropdown) {
-            const inputElement = element.querySelector('.filter-dropdown__input')
-            closeFilterDropdown(element, inputElement, inputsInitialValues[index])
+        // Le filtre n'est pas celui sur lequel l'utilisateur a cliqué
+
+            const isOpen = element.className.includes('filter-dropdown--open') 
+
+            if(isOpen) {
+            // Mais est ouvert, il faut donc le fermer
+
+                const inputElement = element.querySelector('.filter-dropdown__input')
+                closeFilterDropdown(element, inputElement, inputsInitialValues[index])
+
+                /* On réitinialise la liste de tags associé à ce filtre que l'on ferme 
+                pour qu'à la nouvelle ouverture de celui-ci, l'utilisateur voie la liste complète
+                */
+                createFilterDropdownTagsList(element, tagsPerType[inputElement.name])
+            }
         } 
 
     })
@@ -301,35 +328,35 @@ function setTagElementBehaviour(tagElement, tagName) {
 }
 
 
-function setFiltersInputBehaviour() {
+/* Définit le comportement d'un input de filtre
+    Paramètres :
+        - Un élément HTML correspondant à un filtre
+        - La valeur de l'attribut name de l'input associé au filtre
+        - La valeur de l'attribut value de l'input associé au filtre
+    Renvoie :
+        - Rien
+*/
+function setFilterDropdownInputBehaviour(filterDropdown, inputElement) {
 
-    const inputElements = document.getElementsByClassName('filter-dropdown__input'),
-        inputElementsArray = Array.from(inputElements)
+    inputElement.addEventListener('input', () => {
 
-    inputElementsArray.forEach(input => {
-        input.addEventListener('input', (e) => {
+        const inputValue = inputElement.value,
+            inputName = inputElement.name
+ 
+        if(inputValue.length >= 3) {
+        // L'utilisateur a tapé plus de trois lettres, on estime que c'est pertinent de lancer la recherche des tags 
+    
+            const regexToMatch = new RegExp(inputValue, 'i')
+            const matchedTags = tagsPerType[inputName].filter(tag => tag.match(regexToMatch))
+            
+            // On crée de nouveau la liste de tags contenant seulement les tags retenus
+            createFilterDropdownTagsList(filterDropdown, matchedTags)
+    
+        } else createFilterDropdownTagsList(filterDropdown, tagsPerType[inputName]) // La liste complète de tags doit être affichée
 
-            const inputElement = e.target,
-                inputValue = inputElement.value,
-                inputName = inputElement.name
-console.log(inputName)
-            if(inputValue.length >= 3) {
-                console.log(tagsPerType[inputName])
-                const regexToMatch = new RegExp(inputValue, 'i')
-                const matchedTags = tagsPerType[inputName].filter(tag => {
-                    tag.match(regexToMatch)
-                    if(tag.match(regexToMatch)) {
-                        console.log(tag)
-                        return tag
-                    }
-                } )
-                console.log(matchedTags)
-            }
-                
-        })
     })
 
 }
 
 
-export { setFilterDropdownsBehaviour, setFiltersInputBehaviour }
+export { setFilterDropdownsBehaviour }
