@@ -26,7 +26,9 @@
         
         &--visible {
             display: flex;
+            flex-wrap: wrap;
             column-gap: 1.5%; 
+            row-gap: 10px;
         }
     }
 
@@ -42,12 +44,21 @@
     align-items: center;
     column-gap: 12px;
 
-    background-color: #3283f7;
     font-size: 14px;
     font-weight: 700;
     color: #ffffff;
     border-radius: 5px;
     padding: 10px 20px;
+    
+    &--ingredients {
+        background-color: #3283f7;
+    }
+    &--devices {
+        background-color: #68d9a4;
+    }
+    &--cookware {
+        background-color: #ED6454;
+    }
 
     &__name {
         margin: 0;

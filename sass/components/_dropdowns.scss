@@ -5,7 +5,7 @@
 
     display: grid;
 
-    width: 13%;
+    width: 15%;
     height: 69px;
     border-radius: 5px;
 
@@ -13,6 +13,8 @@
     
     &.btn {
         padding: 25px 18px;
+        border-right: 0px;
+        border-left: 0px;
     }
 
     &__button {
@@ -27,6 +29,11 @@
         color: #ffff;
         font-size: abstracts.get-rem-value(18);
         padding: 0;
+        outline: none;
+
+        &::placeholder {
+            color: #ffff;
+        }
     }
     
     &__tags-list {
@@ -35,12 +42,17 @@
 
     &__tag {
         justify-self: flex-start;
+        text-align: left;
+        width: 60%;
+        min-width: fit-content;
     }
 
     &--open {
+        position: relative;
         width: 667px;
         height: auto;
-        row-gap: 30px;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
 
         #{$filterDropdown} {
             
@@ -49,11 +61,29 @@
             }
 
             &__tags-list {
+                position: absolute;
+                top: 71px;
+                z-index: 2;
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
                 row-gap: 15px;
+                padding-left: 18px;
                 color: #ffffff;
-            }            
+
+                &--ingredients {
+                    background-color: #3283f7;
+                }
+                &--devices {
+                    background-color: #68d9a4;
+                }
+                &--cookware {
+                    background-color: #ED6454;
+                }
+            }
+            
+            &__input {
+                flex-grow: 1;
+            }
         }
 
     }
