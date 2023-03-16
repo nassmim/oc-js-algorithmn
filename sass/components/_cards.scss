@@ -23,6 +23,12 @@
         padding: 20px 20px;
     }
 
+    &__information {
+        grid-column-end: span 2;
+        display: flex;
+        justify-content: space-between;
+    }
+
     &__title {
         font-size: abstracts.get-rem-value(18);
         font-weight: 400;
@@ -42,6 +48,14 @@
     &__ingredients {
         font-size: abstracts.get-rem-value(12);
         font-weight: 400;
+    }
+
+    &__ingredient-item {
+        display: flex;
+    }
+
+    &__ingredient-name {
+        font-weight: 700;
     }
 
     &__cooking-steps {
