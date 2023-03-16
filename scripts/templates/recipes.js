@@ -1,5 +1,25 @@
 // --------------- FICHIER QUI GERE L'UI DES CARTES DE RECETTES ---------------
 
+const recipesElement = document.querySelector('.recipes')
+
+function createRecipes(recipes) {
+
+    recipes.forEach(recipe => {
+
+        const recipeArticle = document.createElement('article')
+        recipeArticle.classList.add('card')
+    
+        const recipeElementsHTML = createRecipeElements(recipe)
+    
+        recipeArticle.insertAdjacentHTML('beforeend', recipeElementsHTML)
+        
+        createListOfIngredientsElement(recipe, recipeArticle)
+
+        recipesElement.appendChild(recipeArticle)
+    })
+}
+
+
 function createRecipeElements(recipe) {
 
     const article = `
@@ -48,6 +68,17 @@ function createRecipeElements(recipe) {
 }
 
 
+function createListOfIngredientsElement(recipe, recipeArticle) {
+
+    const listOfIngredientsElement = recipeArticle.querySelector('.card__ingredients')
+    recipe.ingredients.forEach(ingredient => {
+        const ingredientElement = createIngredientElement(ingredient)
+        listOfIngredientsElement.insertAdjacentHTML('beforeend', ingredientElement)
+    })
+
+}
+
+
 function createIngredientElement(ingredient) {
 
     let ingredientElement;
@@ -74,4 +105,4 @@ function createIngredientElement(ingredient) {
     return ingredientElement
 }
 
-export { createRecipeElements, createIngredientElement }
+export { createRecipes }

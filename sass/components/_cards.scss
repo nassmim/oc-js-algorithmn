@@ -4,6 +4,7 @@
 
     max-width: 380px;
     background-color: #E7E7E7;
+    border: none;
 
     &__link--image {
         display: flex;
@@ -36,22 +37,25 @@
 
     &__duration-information {
         display: flex;
-        column-gap: 10px;
+        column-gap: 7px;
         justify-self: end;
     }
 
     &__duration {
         font-size: abstracts.get-rem-value(18);
         font-weight: 700;
+        white-space: nowrap;
     }
 
     &__ingredients {
         font-size: abstracts.get-rem-value(12);
         font-weight: 400;
+        line-height: 14px;
     }
 
     &__ingredient-item {
         display: flex;
+        flex-wrap: wrap;
     }
 
     &__ingredient-name {
@@ -59,8 +63,14 @@
     }
 
     &__cooking-steps {
+        display: -webkit-box;        
+        height: 73px;
+        -webkit-line-clamp: 6;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
         font-family: 'Roboto';
         font-size: abstracts.get-rem-value(12);
         font-weight: 400;
+        line-height: 100%;
     }
 }
