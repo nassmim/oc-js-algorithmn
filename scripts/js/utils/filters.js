@@ -15,10 +15,10 @@ import { createRecipes } from "../../templates/recipes.js"
 const filterDropdowns = document.getElementsByClassName('filter-dropdown'), 
     filterDropdownsArray = Array.from(filterDropdowns)
 
-const standardClassNameForFilterDropdown = 'filter-dropdown'
-
 // Récupère l'élément regroupant l'ensemble des tags choisis par l'utilisateur
 const filterTagsElement = document.querySelector('.filters__tags')
+const tagsSelectedElements = document.querySelectorAll('.tag')
+let tagsSelectedElementArray = Array.from(tagsSelectedElements)
 let tagsSelectedNames = []
 
 let recipesFiltered = []
@@ -90,7 +90,7 @@ function getRightTypeTags(recipe, tagType) {
     }
 
     const listOfTags = Array.isArray(tags) ? tags : [tags],
-        listOfTagsCapitalized = listOfTags.map(tag => tag.charAt(0).toUpperCase() + tag.slice(1))
+        listOfTagsCapitalized = listOfTags.map(tag => tag.charAt(0).toUpperCase() + tag.slice(1).toLowerCase())
 
     return listOfTagsCapitalized
 
@@ -136,8 +136,8 @@ function setFilterDropdownsBehaviour() {
                         if(!tagsSelectedNames.includes(tagName)) {
                         // Si le tag n'est pas déjà sélectionné, il est alors ajouté à la liste de tags 
                             
-                            addTag(clickedElement, tagName)
-                            filterRecipes(inputName, tagName)
+                            addTag(inputName, tagName)
+                            if(tagsSelectedNames.length < 2 || recipesFiltered.length) filterRecipes(inputName, tagName)
                         } 
                     } 
 
@@ -272,9 +272,9 @@ function setFilterDropdownInputAttribute(inputElement, type) {
     Renvoie :
         - Rien
 */
-function addTag(clickedElement, tagName) {
+function addTag(inputName, tagName) {
 
-    const tagElement = createTag(clickedElement, tagName);
+    const tagElement = createTag(inputName, tagName);
 
     setTagElementCloseBehaviour(tagElement, tagName)
 
@@ -284,6 +284,7 @@ function addTag(clickedElement, tagName) {
     if(!filterTagsElement.className.includes('filters__tags--visible')) filterTagsElement.classList.add('filters__tags--visible')
 
     tagsSelectedNames.push(tagName)
+    tagsSelectedElementArray.push(tagElement)
 }
 
 
@@ -294,10 +295,10 @@ function addTag(clickedElement, tagName) {
     Renvoie :
         - L'élement tag
 */
-function createTag(clickedElement, tagName) {
+function createTag(inputName, tagName) {
 
-    const dropdownElement = clickedElement.closest('.'+standardClassNameForFilterDropdown)
-    const elementBackgroundColor = window.getComputedStyle(dropdownElement, null).getPropertyValue("background-color")
+    // const dropdownElement = clickedElement.closest('.'+standardClassNameForFilterDropdown)
+    // const elementBackgroundColor = window.getComputedStyle(dropdownElement, null).getPropertyValue("background-color")
 
     const tagElement = document.createElement('div');
     const elementInnerHTML = `
@@ -316,8 +317,9 @@ function createTag(clickedElement, tagName) {
     `;
 
     tagElement.innerHTML = elementInnerHTML;
-    tagElement.classList.add('tag')
-    tagElement.style.backgroundColor = elementBackgroundColor
+
+    tagElement.classList.add('tag', `tag--${inputName}`)
+    // tagElement.style.backgroundColor = elementBackgroundColor
 
     return tagElement;
 }
@@ -336,6 +338,8 @@ function setTagElementCloseBehaviour(tagElement, tagName) {
     closeButton.addEventListener('click', () => {
         filterTagsElement.removeChild(tagElement)
         tagsSelectedNames = tagsSelectedNames.filter(name => name !== tagName)
+        tagsSelectedElementArray = tagsSelectedElementArray.filter(tag => tag.textContent.trim() !== tagName)
+        console.log(tagsSelectedElementArray)
         filterRecipes()
     })
 
@@ -345,12 +349,10 @@ function setTagElementCloseBehaviour(tagElement, tagName) {
 function filterRecipes(inputName=undefined, tagName=undefined) {
 
     if(tagName) {
-        const initialRecipesFiltered = Object.assign([], recipesFiltered)
         recipesFiltered = filterRecipesMore(inputName, tagName)
-        // recipedFilteredByTag[tagName] = initialRecipesFiltered.filter(recipe => !recipesFiltered.includes(recipe))
     console.log(recipesFiltered)
     } else {
-        recipesFiltered = filterRecipesLess()
+        recipesFiltered =  filterRecipesLess()
     }
 
     // createRecipes(recipesFiltered)
@@ -358,7 +360,7 @@ function filterRecipes(inputName=undefined, tagName=undefined) {
 
 
 function filterRecipesMore(inputName, tagName) {
-
+    
     const recipesToSearchFrom = search.searchInput.value ? search.recipesSearched : tagsSelectedNames.length > 1 ? recipesFiltered : recipes
     
     let recipesFound = []
@@ -416,6 +418,24 @@ function filterRecipesByUstensil(recipesToSearchFrom, tagName) {
 }
 
 
+function filterRecipesLess() {
+
+    let recipesToSearchFrom = search.searchInput.value ? search.recipesSearched : recipes
+
+    if(!tagsSelectedElementArray.length) recipesFiltered = Object.assign([], recipesToSearchFrom)
+    else {
+
+        tagsSelectedElementArray.forEach((tag, index) => {
+            
+            if(index > 0) recipesToSearchFrom = Object.assign([], recipesFiltered) 
+            if(tag.classList.contains('tag--ingredients')) recipesFiltered = filterRecipesByIngredient(recipesToSearchFrom, tag.textContent.trim())
+            else if (tag.classList.contains('tag--appliance')) recipesFiltered = filterRecipesByAppliance(recipesToSearchFrom, tag.textContent.trim())
+            else recipesFiltered = filterRecipesByUstensil(recipesToSearchFrom, tag.textContent.trim())
+        }) 
+    }
+
+    console.log(recipesFiltered)
+}
 
 /* Définit le comportement d'un input de filtre
     Paramètres :
