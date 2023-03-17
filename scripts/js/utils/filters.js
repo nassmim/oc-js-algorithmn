@@ -3,7 +3,9 @@
 /** **************************** MODULES **************************************** */
 /** ******************************************************************** */
 
+import { search } from "./index.js"
 import recipes from "../../../data/recipes.js"
+import { createRecipes } from "../../templates/recipes.js"
 
 
 /** **************************** PROCEDURES **************************************** */
@@ -18,6 +20,8 @@ const standardClassNameForFilterDropdown = 'filter-dropdown'
 // Récupère l'élément regroupant l'ensemble des tags choisis par l'utilisateur
 const filterTagsElement = document.querySelector('.filters__tags')
 let tagsSelectedNames = []
+
+let recipesFiltered = []
 
 const inputsInitialValues = ['Ingrédients', 'Appareils', 'Ustensils']
 
@@ -86,9 +90,9 @@ function getRightTypeTags(recipe, tagType) {
     }
 
     const listOfTags = Array.isArray(tags) ? tags : [tags],
-        listOfUniqueTags = listOfTags.map(tag => tag.toLowerCase())
+        listOfTagsCapitalized = listOfTags.map(tag => tag.charAt(0).toUpperCase() + tag.slice(1))
 
-    return listOfUniqueTags
+    return listOfTagsCapitalized
 
 }
 
@@ -126,9 +130,15 @@ function setFilterDropdownsBehaviour() {
 
                     else if(elementClassList.contains('filter-dropdown__tag')) {
                     // L'utilisateur a sélectionné un tag
+
                         const tagName = clickedElement.textContent
+
+                        if(!tagsSelectedNames.includes(tagName)) {
                         // Si le tag n'est pas déjà sélectionné, il est alors ajouté à la liste de tags 
-                        if(!tagsSelectedNames.includes(tagName)) addTag(clickedElement, tagName)
+                            
+                            addTag(clickedElement, tagName)
+                            filterRecipes(inputName, tagName)
+                        } 
                     } 
 
                     // L'utilisateur désire fermer le filtre
@@ -266,7 +276,7 @@ function addTag(clickedElement, tagName) {
 
     const tagElement = createTag(clickedElement, tagName);
 
-    setTagElementBehaviour(tagElement, tagName)
+    setTagElementCloseBehaviour(tagElement, tagName)
 
     filterTagsElement.appendChild(tagElement);
 
@@ -320,15 +330,91 @@ function createTag(clickedElement, tagName) {
     Renvoie :
         - Rien
 */
-function setTagElementBehaviour(tagElement, tagName) {
+function setTagElementCloseBehaviour(tagElement, tagName) {
 
     const closeButton = tagElement.querySelector('.tag__close')
     closeButton.addEventListener('click', () => {
         filterTagsElement.removeChild(tagElement)
         tagsSelectedNames = tagsSelectedNames.filter(name => name !== tagName)
+        filterRecipes()
     })
 
 }
+
+
+function filterRecipes(inputName=undefined, tagName=undefined) {
+
+    if(tagName) {
+        const initialRecipesFiltered = Object.assign([], recipesFiltered)
+        recipesFiltered = filterRecipesMore(inputName, tagName)
+        // recipedFilteredByTag[tagName] = initialRecipesFiltered.filter(recipe => !recipesFiltered.includes(recipe))
+    console.log(recipesFiltered)
+    } else {
+        recipesFiltered = filterRecipesLess()
+    }
+
+    // createRecipes(recipesFiltered)
+}
+
+
+function filterRecipesMore(inputName, tagName) {
+
+    const recipesToSearchFrom = search.searchInput.value ? search.recipesSearched : tagsSelectedNames.length > 1 ? recipesFiltered : recipes
+    
+    let recipesFound = []
+    switch(inputName) {
+
+        case 'ingredients':
+            recipesFound = filterRecipesByIngredient(recipesToSearchFrom, tagName)
+            break
+        
+        case 'appliance':
+            recipesFound = filterRecipesByAppliance(recipesToSearchFrom, tagName)
+            break
+
+        case 'ustensils':
+            recipesFound = filterRecipesByUstensil(recipesToSearchFrom, tagName)
+            break
+    }
+
+    return recipesFound
+}
+
+
+
+function filterRecipesByIngredient(recipesToSearchFrom, tagName) {
+
+    const recipesFound = recipesToSearchFrom.reduce((listOfRecipes, recipe) => {
+        const ingredients = recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase())
+        return ingredients.includes(tagName.toLowerCase()) ? listOfRecipes.concat(recipe) : listOfRecipes
+    }, []) 
+
+    return recipesFound
+}
+
+
+
+function filterRecipesByAppliance(recipesToSearchFrom, tagName) {
+
+    const recipesFound = recipesToSearchFrom.reduce((listOfRecipes, recipe) => {
+        return recipe.appliance.toLowerCase() === tagName.toLowerCase() ? listOfRecipes.concat(recipe) : listOfRecipes
+    }, []) 
+
+    return recipesFound
+}
+
+
+
+function filterRecipesByUstensil(recipesToSearchFrom, tagName) {
+
+    const recipesFound = recipesToSearchFrom.reduce((listOfRecipes, recipe) => {
+        const ustensils = recipe.ustensils.map(ustensil => ustensil.toLowerCase())
+        return ustensils.includes(tagName.toLowerCase()) ? listOfRecipes.concat(recipe) : listOfRecipes
+    }, []) 
+
+    return recipesFound
+}
+
 
 
 /* Définit le comportement d'un input de filtre
@@ -398,4 +484,4 @@ function showAllTags(listOfTags) {
 }
 
 
-export { setFilterDropdownsBehaviour, setFilterDropdownInputBehaviour }
+export { setFilterDropdownsBehaviour, setFilterDropdownInputBehaviour, recipesFiltered }
