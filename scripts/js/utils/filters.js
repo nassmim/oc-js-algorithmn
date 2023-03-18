@@ -1,4 +1,4 @@
-// --------------- FICHIER DE CONTRÔLE DES FONCTIONNALITES DE RECHERCHE ET FILTRE PAR TAG ---------------
+// --------------- FICHIER DE CONTRÔLE DES FONCTIONNALITÉS DE FILTRAGE PAR TAG ---------------
 
 /** **************************** MODULES **************************************** */
 /** ******************************************************************** */
@@ -22,10 +22,9 @@ const filterTagsElement = document.querySelector('.filters__tags')
 const tagsSelectedElements = document.querySelectorAll('.tag')
 let tagsSelectedElementArray = Array.from(tagsSelectedElements)
 
-// La liste des tags sélectionnés par l'utilisateur
-let tagsFromRecipes = []
+// La liste des tags contenus dans l'ensemble des recettes affichées
+export let tagsFromRecipes = []
     
-
 // Permettra d'updater la liste de recettes à chaque fois qu'un filtre est ajouté/retiré
 let recipesFiltered = []
 
@@ -389,11 +388,11 @@ function setTagElementCloseBehaviour(tagElement, tagName, inputName) {
 */
 function filterRecipes(inputName, tagName) {
 
-    /* Détermine quelle liste de recettes utiliser 
+    /* Détermine sur quelle liste de recettes effectuer le filtre 
         Si l'utilisateur utilise la recherche principale, les recettes a afficher sont celles qui matchent la recherche
         Si l'utilisateur n'a pas utilisé la recherche principale mais sélectionné un tag, les recettes à afficher
         sont celles contenant l'ensemble des tags
-        Si ni la recherche principale ni tags n'ont été utiliser, alors on la liste totale de recettes sera utilisée
+        Si ni la recherche principale ni tags n'ont été utilisés, alors on la liste totale de recettes sera utilisée
         Cela permet d'effectuer le filtre à partir de la dernière liste de recette connue, 
         et donc d'éviter de filtrer la liste initiale de recettes à chaque ajout de tags
     */
@@ -505,7 +504,7 @@ function filterRecipesByUstensil(recipesToSearchFrom, tagName) {
 */
 function unfilterRecipes() {
 
-    /* Détermine quelle liste de recettes utiliser en point de départ afin d'éviter de filtrer à chaque fois sur la liste entière
+    /* Détermine quelle liste de recettes utiliser en point de départ 
         Si l'utilisateur utilise la recherche principale, les recettes a afficher sont celles qui matchent la recherche
         Sinon la liste totale de recettes sera utilisée
         On n'utilise pas la liste filtrée par tags comme point de départ car aucune solution efficace trouvée
@@ -562,7 +561,7 @@ function getTagsFromRecipes(listOfRecipes) {
 
         return listOfTags.concat(ingredients).concat(appliance).concat(ustensils)
 
-    })
+    }, [])
 
     return tagsFound
 }
@@ -651,4 +650,4 @@ function capitalizeString(text) {
 }
 
 
-export { setFilterDropdownsBehaviour, setFilterDropdownInputBehaviour, recipesFiltered }
+export { setFilterDropdownsBehaviour, setFilterDropdownInputBehaviour, filterTags, getTagsFromRecipes, recipesFiltered, tagsToShow, tagsSelectedElementArray }
