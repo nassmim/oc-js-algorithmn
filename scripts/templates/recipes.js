@@ -4,6 +4,9 @@ const recipesElement = document.querySelector('.recipes')
 
 function createRecipes(recipes) {
 
+    // Pas d'event handler sur les cartes de recettes, on peut vider la liste de recettes comme ça
+    recipesElement.innerHTML = ""
+
     recipes.forEach(recipe => {
 
         const recipeArticle = document.createElement('article')
