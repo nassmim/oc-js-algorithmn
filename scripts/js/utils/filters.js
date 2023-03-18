@@ -23,7 +23,11 @@ const tagsSelectedElements = document.querySelectorAll('.tag')
 let tagsSelectedElementArray = Array.from(tagsSelectedElements)
 
 // La liste des tags contenus dans l'ensemble des recettes affichées
-export let tagsFromRecipes = []
+let tagsFromRecipes = {
+    "ingredients": [],
+    "appliance": [],
+    "ustensils": [],
+}
     
 // Permettra d'updater la liste de recettes à chaque fois qu'un filtre est ajouté/retiré
 let recipesFiltered = []
@@ -43,6 +47,11 @@ const initialTags = {
 
 // Permettra d'updater la liste de tags que l'utilisateur peut choisir en fonction des recettes affichées
 let tagsToShow = Object.assign({}, initialTags)
+
+let tagsToUse = {
+    'initial': initialTags,
+    'updated': tagsToShow
+}
 
 /** **************************** FUNCTIONS **************************************** */
 /** ******************************************************************** */
@@ -154,11 +163,8 @@ function setFilterDropdownsBehaviour() {
 
                                 // Update la liste de recettes et crée l'élément contenant la nouvelle liste
                                 recipesFiltered = filterRecipes(inputName, tagName)
-                                createRecipes(recipesFiltered)
-
-                                // Update la liste de tags à montrer dans ce filtre 
-                                tagsToShow[inputName] = filterTags(tagsToShow[inputName])
-                                createFilterDropdownTagsList(filterDropdown, tagsToShow[inputName])
+                                createRecipesUpdateTags(recipesFiltered, "updated")
+                                                                
                             } 
                         } 
                     } 
@@ -298,7 +304,7 @@ function addTag(inputName, tagName) {
 
     const tagElement = createTag(inputName, tagName);
 
-    setTagElementCloseBehaviour(tagElement, tagName, inputName)
+    setTagElementCloseBehaviour(tagElement, tagName)
 
     filterTagsElement.appendChild(tagElement);
 
@@ -355,7 +361,7 @@ function createTag(inputName, tagName) {
     Renvoie :
         - Rien
 */
-function setTagElementCloseBehaviour(tagElement, tagName, inputName) {
+function setTagElementCloseBehaviour(tagElement, tagName) {
 
     const closeButton = tagElement.querySelector('.tag__close')
 
@@ -369,10 +375,7 @@ function setTagElementCloseBehaviour(tagElement, tagName, inputName) {
         // Puisque le tag est retiré, il faut updater la liste de recettes à afficher
         recipesFiltered = unfilterRecipes()
 
-        // La liste de recettes ayant changé, il faut updater la liste de tags que l'on peut afficher à l'utilisateur
-        tagsToShow[inputName] = filterTags(initialTags[inputName])
-        const filterDropdown = document.querySelector(`.filter-dropdown--${inputName}`)
-        createFilterDropdownTagsList(filterDropdown, tagsToShow[inputName])
+        createRecipesUpdateTags(recipesFiltered, 'initial')
 
     })
 
@@ -414,7 +417,7 @@ function filterRecipes(inputName, tagName) {
             recipesFound = filterRecipesByUstensil(recipesToSearchFrom, tagName)
             break
     }
-
+console.log(recipesFound)
     return recipesFound 
     
 }
@@ -435,7 +438,7 @@ function filterRecipesByIngredient(recipesToSearchFrom, tagName) {
         const ingredients = recipe.ingredients.map(ingredient => capitalizeString(ingredient.ingredient))
 
         // On ajoute les ingrédients de la recette à la liste des tags contenus dans l'ensemble des recettes affichée
-        tagsFromRecipes = tagsFromRecipes.concat(ingredients)
+        tagsFromRecipes['ingredients'] = tagsFromRecipes['ingredients'].concat(ingredients)
 
         // On retient la recette si elle contient l'ingrédient correspondant au tag choisi par l'utilisateur
         if(ingredients.includes(tagName)) recipesFound = recipesFound.concat(recipe) 
@@ -461,7 +464,7 @@ function filterRecipesByAppliance(recipesToSearchFrom, tagName) {
         const appliance = capitalizeString(recipe.appliance)
 
         // On ajoute l'appareil de la recette à la liste des tags contenus dans l'ensemble des recettes affichée
-        tagsFromRecipes = tagsFromRecipes.push(appliance)
+        tagsFromRecipes['appliance'].push(appliance)
         
         if(appliance === tagName) recipesFound = recipesFound.concat(recipe) 
 
@@ -486,7 +489,7 @@ function filterRecipesByUstensil(recipesToSearchFrom, tagName) {
         const ustensils = recipe.ustensils.map(ustensil => capitalizeString(ustensil))
 
         // On ajoute les ustensils de la recette à la liste des tags contenus dans l'ensemble des recettes affichée
-        tagsFromRecipes.concat(ustensils)
+        tagsFromRecipes['ingredients'] = tagsFromRecipes['ingredients'].concat(ustensils)
 
        if(ustensils.includes(tagName)) recipesFound = recipesFound.concat(recipe) 
 
@@ -513,16 +516,8 @@ function unfilterRecipes() {
 
     let recipesFound = []
 
-    if(!tagsSelectedElementArray.length) {
-    // Le dernier tag vient d'être enlevé
-
-        // Pas de filtre à réaliser, on conserve juste la liste définie plus haut
-        recipesFound = Object.assign([], recipesToSearchFrom)
-
-        // On récupère l'ensemble des tags contenus dans les recettes
-        tagsFromRecipes = getTagsFromRecipes(recipesFound)
-        
-    } 
+    // Le dernier tag vient d'être enlevé, donc pas de filtre à réaliser, on conserve juste la liste définie plus haut
+    if(!tagsSelectedElementArray.length) recipesFound = Object.assign([], recipesToSearchFrom)
 
     else {
     // Il y a au moins un tag, il faut donc effectuer un filtre par tag 
@@ -539,8 +534,31 @@ function unfilterRecipes() {
             else recipesFound = filterRecipesByUstensil(recipesToSearchFrom, tag.textContent.trim())
         }) 
     }
-
+console.log(recipesFound)
     return recipesFound
+}
+
+
+function createRecipesUpdateTags(listOfRecipes, tagsToUseKey) {
+
+    createRecipes(listOfRecipes)
+
+    // On récupère l'ensemble des tags contenus dans les recettes
+    getTagsFromRecipes(listOfRecipes)
+
+    filterDropdownsArray.forEach(filterDropdown => {
+
+        const inputElement = filterDropdown.querySelector('.filter-dropdown__input'),
+            inputName = inputElement.name
+            
+        // La liste de recettes ayant changé, il faut updater la liste de tags que l'on peut afficher à l'utilisateur
+        filterTags(inputName, tagsToUseKey)
+        
+        createFilterDropdownTagsList(filterDropdown, tagsToShow[inputName])
+
+        const tagElements = filterDropdown.querySelectorAll('.filter-dropdown__tag')
+        setFilterDropdownInputBehaviour(inputElement, tagElements)            
+    })    
 }
 
 
@@ -552,29 +570,41 @@ function unfilterRecipes() {
 */
 function getTagsFromRecipes(listOfRecipes) {
 
-    // On parcourt l'ensemble des recette et on récupère pour chacune tous les ingrédients, l'appareil et tous les ustensils
-    const tagsFound = listOfRecipes.reduce((listOfTags, recipe) => {
+    const initialTagsForReduce = {'ingredients': [], 'appliance': [], 'ustensils': []}
+    // On parcourt l'ensemble des recettes et on récupère pour chacune tous les ingrédients, l'appareil et tous les ustensils
+    const tagsFromRecipesWithDuplicates = listOfRecipes.reduce((tags, recipe) => {
 
         const ingredients = recipe.ingredients.map(ingredient => capitalizeString(ingredient.ingredient)),
             appliance = capitalizeString(recipe.appliance),
             ustensils = recipe.ustensils.map(ustensil => capitalizeString(ustensil))
 
-        return listOfTags.concat(ingredients).concat(appliance).concat(ustensils)
+        tags['ingredients'] = tags['ingredients'].concat(ingredients)
+        tags['appliance'].push(appliance)
+        tags['ustensils'] = tags['ustensils'].concat(ustensils)
 
-    }, [])
+        return tags
 
-    return tagsFound
+    }, initialTagsForReduce)
+
+    tagsFromRecipes = Object.assign({}, tagsFromRecipesWithDuplicates)
+    Object.keys(tagsFromRecipes).forEach(tagType => {
+        tagsFromRecipes[tagType] = [...new Set(tagsFromRecipes[tagType])]
+    })
+
+console.log(tagsFromRecipes)
 }
 
 
 /* Récupère la liste de tags à afficher compte tenu des recettes affichées
     Paramètres :
         - Une liste de tags
+        - Un nom de clé 
     Renvoie :
-        - Une liste de tags
+        - Rien
 */
-function filterTags(listOfTags) {
-    return listOfTags.filter(tag => tagsFromRecipes.includes(tag))
+function filterTags(inputName, tagsToUseKey) {
+    tagsToShow[inputName] = tagsToUse[tagsToUseKey][inputName].filter(tag => tagsFromRecipes[inputName].includes(tag))
+    console.log(tagsToShow[inputName])
 }
 
 
@@ -650,4 +680,4 @@ function capitalizeString(text) {
 }
 
 
-export { setFilterDropdownsBehaviour, setFilterDropdownInputBehaviour, filterTags, getTagsFromRecipes, recipesFiltered, tagsToShow, tagsSelectedElementArray }
+export { setFilterDropdownsBehaviour, setFilterDropdownInputBehaviour, filterTags, getTagsFromRecipes, recipesFiltered, tagsSelectedElementArray }
