@@ -1,25 +1,34 @@
 // --------------- FICHIER QUI GERE L'UI DES CARTES DE RECETTES ---------------
 
-const recipesElement = document.querySelector('.recipes')
+const recipesElement = document.querySelector('.recipes'),
+    noRecipesElement = document.querySelector('.no-recipes')
 
 function createRecipes(recipes) {
 
     // Pas d'event handler sur les cartes de recettes, on peut vider la liste de recettes comme ça
     recipesElement.innerHTML = ""
 
-    recipes.forEach(recipe => {
+    if(recipes.length) {
 
-        const recipeArticle = document.createElement('article')
-        recipeArticle.classList.add('card')
+        noRecipesElement.classList.remove('no-recipes--visible')
     
-        const recipeElementsHTML = createRecipeElements(recipe)
+        recipes.forEach(recipe => {
     
-        recipeArticle.insertAdjacentHTML('beforeend', recipeElementsHTML)
+            const recipeArticle = document.createElement('article')
+            recipeArticle.classList.add('card')
         
-        createListOfIngredientsElement(recipe, recipeArticle)
+            const recipeElementsHTML = createRecipeElements(recipe)
+        
+            recipeArticle.insertAdjacentHTML('beforeend', recipeElementsHTML)
+            
+            createListOfIngredientsElement(recipe, recipeArticle)
+    
+            recipesElement.appendChild(recipeArticle)
+        })
 
-        recipesElement.appendChild(recipeArticle)
-    })
+    } else {
+        noRecipesElement.classList.add('no-recipes--visible')
+    }
 }
 
 

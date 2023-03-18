@@ -161,8 +161,9 @@ function setFilterDropdownsBehaviour() {
                             */
                             if(tagsSelectedNames.length < 2 || recipesFiltered.length) {
 
-                                // Update la liste de recettes et crée l'élément contenant la nouvelle liste
+                                // Update la liste de recettes 
                                 recipesFiltered = filterRecipes(inputName, tagName)
+                                // Crée les recettes et les tags à afficher
                                 createRecipesUpdateTags(recipesFiltered, "updated")
                                                                 
                             } 
@@ -374,7 +375,7 @@ function setTagElementCloseBehaviour(tagElement, tagName) {
         
         // Puisque le tag est retiré, il faut updater la liste de recettes à afficher
         recipesFiltered = unfilterRecipes()
-
+        // Crée les recettes et les tags à afficher
         createRecipesUpdateTags(recipesFiltered, 'initial')
 
     })
@@ -399,7 +400,7 @@ function filterRecipes(inputName, tagName) {
         Cela permet d'effectuer le filtre à partir de la dernière liste de recette connue, 
         et donc d'éviter de filtrer la liste initiale de recettes à chaque ajout de tags
     */
-    const recipesToSearchFrom = search.searchInput.value > 3 ? search.recipesSearched : tagsSelectedElementArray.length > 1 ? recipesFiltered : recipes
+    const recipesToSearchFrom = search.searchInput.value >= 3 ? search.recipesSearched : tagsSelectedElementArray.length > 1 ? recipesFiltered : recipes
     
     let recipesFound = []
     switch(inputName) {
@@ -417,7 +418,7 @@ function filterRecipes(inputName, tagName) {
             recipesFound = filterRecipesByUstensil(recipesToSearchFrom, tagName)
             break
     }
-console.log(recipesFound)
+
     return recipesFound 
     
 }
@@ -512,7 +513,7 @@ function unfilterRecipes() {
         Sinon la liste totale de recettes sera utilisée
         On n'utilise pas la liste filtrée par tags comme point de départ car aucune solution efficace trouvée
     */  
-    let recipesToSearchFrom = search.searchInput.value > 3 ? search.recipesSearched : recipes
+    let recipesToSearchFrom = search.searchInput.value >= 3 ? search.recipesSearched : recipes
 
     let recipesFound = []
 
@@ -534,11 +535,18 @@ function unfilterRecipes() {
             else recipesFound = filterRecipesByUstensil(recipesToSearchFrom, tag.textContent.trim())
         }) 
     }
-console.log(recipesFound)
+
     return recipesFound
 }
 
 
+/* Lance un certains nombre d'actions dans le but d'afficher les bonnes recettes et tags
+    Paramètres :
+        - Une liste de recettes
+        - Un clé correspondant à un type de tags
+    Renvoie :
+        - Rien
+*/
 function createRecipesUpdateTags(listOfRecipes, tagsToUseKey) {
 
     createRecipes(listOfRecipes)
@@ -554,8 +562,10 @@ function createRecipesUpdateTags(listOfRecipes, tagsToUseKey) {
         // La liste de recettes ayant changé, il faut updater la liste de tags que l'on peut afficher à l'utilisateur
         filterTags(inputName, tagsToUseKey)
         
+        // Création de la liste des tags du filtre
         createFilterDropdownTagsList(filterDropdown, tagsToShow[inputName])
 
+        // On rétablit les écouteurs d'évènement l'élément a été vidé via la méthode innerHTML
         const tagElements = filterDropdown.querySelectorAll('.filter-dropdown__tag')
         setFilterDropdownInputBehaviour(inputElement, tagElements)            
     })    
@@ -591,7 +601,6 @@ function getTagsFromRecipes(listOfRecipes) {
         tagsFromRecipes[tagType] = [...new Set(tagsFromRecipes[tagType])]
     })
 
-console.log(tagsFromRecipes)
 }
 
 
@@ -604,7 +613,6 @@ console.log(tagsFromRecipes)
 */
 function filterTags(inputName, tagsToUseKey) {
     tagsToShow[inputName] = tagsToUse[tagsToUseKey][inputName].filter(tag => tagsFromRecipes[inputName].includes(tag))
-    console.log(tagsToShow[inputName])
 }
 
 
@@ -680,4 +688,4 @@ function capitalizeString(text) {
 }
 
 
-export { setFilterDropdownsBehaviour, setFilterDropdownInputBehaviour, filterTags, getTagsFromRecipes, recipesFiltered, tagsSelectedElementArray }
+export { setFilterDropdownsBehaviour, setFilterDropdownInputBehaviour, createRecipesUpdateTags, recipesFiltered, tagsSelectedElementArray }
