@@ -51,15 +51,10 @@ function searchRecipes(searchText) {
     let recipesFound = []
     for(let recipe of recipesToSearchFrom) {
 
-        if(recipe.name.match(regexToMatch)) {
-        // Si le titre de la recette contient le texte recherché, la recette peut être affichée et pas besoin de vérifier les autres informations 
+        if(recipe.name.match(regexToMatch) || recipe.description.match(regexToMatch)) {
+        // Si le titre ou la description de la recette contient le texte recherché, la recette peut être affichée et pas besoin de vérifier les autres informations 
             recipesFound.push(recipe)
             continue 
-
-        } else if (recipe.description.match(regexToMatch)) {
-        // Si la description de la recette contient le texte recherché, la recette peut être affichée et pas besoin de vérifier les autres informations 
-            recipesFound.push(recipe)
-            continue            
 
         } else {
         // Ni le titre ni la description ne matchent le texte recherché, on vérifie alors dans les ingrédients de la recette
