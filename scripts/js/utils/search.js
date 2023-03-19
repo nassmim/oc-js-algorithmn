@@ -33,7 +33,6 @@ searchInput.addEventListener('input', () => {
 
 
 
-
 function searchRecipes(searchText) {
 
     /* Détermine sur quelle liste de recettes effectuer la recherche  
@@ -44,50 +43,51 @@ function searchRecipes(searchText) {
         Cela permet d'effectuer la recherche à partir de la dernière liste de recettes obtenue, 
         et donc d'éviter de rechercher parmi la liste initiale de recettes à chaque input
     */     
-    const recipesToSearchFrom = searchInput.value > 3 ? recipesSearched : tagsSelectedElementArray.length ? recipesFiltered : recipes
+    const recipesToSearchFrom = searchInput.value >= 3 && recipesSearched.length > 0 ? recipesSearched : tagsSelectedElementArray.length ? recipesFiltered : recipes
 
-    const recipesFound = recipesToSearchFrom.reduce((listOfRecipes, recipe) => {
+    const regexToMatch = new RegExp('\(\\s\|\^\)' + searchText, 'i')
 
-        const ingredients = recipe.ingredients.map(ingredient => ingredient.ingredient)
+    let recipesFound = []
+    for(let recipe of recipesToSearchFrom) {
 
-        const regexToMatch = new RegExp('\^' + searchText, 'i')
+        if(recipe.name.match(regexToMatch)) {
+        // Si le titre de la recette contient le texte recherché, la recette peut être affichée et pas besoin de vérifier les autres informations 
+            recipesFound.push(recipe)
+            continue 
 
-        let recipeMatchRegex = recipe.name.match(regexToMatch) || recipe.description.match(regexToMatch)
-        ingredients.forEach(ingredient => recipeMatchRegex || ingredient.match(regexToMatch))
+        } else if (recipe.description.match(regexToMatch)) {
+        // Si la description de la recette contient le texte recherché, la recette peut être affichée et pas besoin de vérifier les autres informations 
+            recipesFound.push(recipe)
+            continue            
 
-        return recipeMatchRegex ? listOfRecipes.concat(recipe) : listOfRecipes
+        } else {
+        // Ni le titre ni la description ne matchent le texte recherché, on vérifie alors dans les ingrédients de la recette
 
-    }, [])
+            let recipeMatched = false,
+                position = 0
+                const ingredients = recipe.ingredients
 
-    return recipesFound
+            /* Boucle sur chaque ingrédient
+            La boucle continue jusqu'à qu'on trouve un ingrédient matchant la recherche 
+            ou que la liste d'ingrédients ait été parcourue au complet
+            */
+            do {
+                const ingredient = ingredients[position].ingredient
 
-}
+                if(ingredient.match(regexToMatch)) {
+                // L'ingrédient matche le texte recherché, on peut arrêter la boucle
+                    recipesFound.push(recipe)
+                    recipeMatched = true
+                } else {
+                // On passe à l'ingrédient suivant
+                    position++
+                }
 
+            } while (recipeMatched === false && position < ingredients.length) 
 
-function searchRecipesV2(searchText) {
+        }
 
-    /* Détermine sur quelle liste de recettes effectuer la recherche  
-        Si l'utilisateur a déjà activé la recherche principale, alors la recherche doit s'effectuer sur les recettes trouvées
-        Si la recherche principale n'a pas encore été déclenchée mais au moins a été choisi par l'utilisateur, 
-        les recettes à afficher sont celles contenant l'ensemble des tags
-        Si ni la recherche principale ni tags n'ont été utilisés, alors on la liste totale de recettes sera utilisée
-        Cela permet d'effectuer la recherche à partir de la dernière liste de recettes obtenue, 
-        et donc d'éviter de rechercher parmi la liste initiale de recettes à chaque input
-    */     
-    const recipesToSearchFrom = searchInput.value > 3 ? recipesSearched : recipesFiltered.length < recipes.length ? recipesFiltered : recipes
-
-    const recipesFound = recipesToSearchFrom.reduce((listOfRecipes, recipe) => {
-
-        const ingredients = recipe.ingredients.map(ingredient => ingredient.ingredient),
-            ingredientsString = ingredients.join(' ')
-
-        const regexToMatch = new RegExp(searchText, 'i')
-        const textsToSearchIn = `${recipe.name} ${ingredientsString} ${recipe.description}`
-        const recipeMatchRegex = textsToSearchIn.match(regexToMatch)
-
-        return recipeMatchRegex ? listOfRecipes.concat(recipe) : listOfRecipes
-
-    }, [])
+    }
 
     return recipesFound
 
