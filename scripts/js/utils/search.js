@@ -20,6 +20,7 @@ searchInput.addEventListener('input', () => {
     searchText.length ? searchInputIcon.style.opacity = 0 : searchInputIcon.style.opacity = 1
 
     if(searchText.length >= 3) {
+        if(!recipesSearched.length) return // Pas besoin d'effectuer une recherche, car l'utilisateur a déjà saisi un texte introuvable
         recipesSearched = searchRecipes(searchText)
         createRecipesUpdateTags(recipesSearched, 'updated')
     } else {
@@ -43,7 +44,7 @@ function searchRecipes(searchText) {
         Cela permet d'effectuer la recherche à partir de la dernière liste de recettes obtenue, 
         et donc d'éviter de rechercher parmi la liste initiale de recettes à chaque input
     */     
-    const recipesToSearchFrom = searchInput.value >= 3 && recipesSearched.length > 0 ? recipesSearched : tagsSelectedElementArray.length ? recipesFiltered : recipes
+    const recipesToSearchFrom = searchInput.value > 3 ? recipesSearched : tagsSelectedElementArray.length ? recipesFiltered : recipes
 
     const regexToMatch = new RegExp('\(\\s\|\^\)' + searchText, 'i')
 
