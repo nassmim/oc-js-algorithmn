@@ -13,16 +13,27 @@ const searchInput = document.querySelector('.search-main__input'),
     searchInputIcon = document.querySelector('.search-main__icon')
 
 
+let previousInputValue = ""
+
 searchInput.addEventListener('input', () => {
 
-    const searchText = searchInput.value
+    const searchText = searchInput.value,
+        searchTextLength = searchText.length
 
-    searchText.length ? searchInputIcon.style.opacity = 0 : searchInputIcon.style.opacity = 1
+    searchTextLength ? searchInputIcon.style.opacity = 0 : searchInputIcon.style.opacity = 1
 
-    if(searchText.length >= 3) {
-        if(!recipesSearched.length) return // Pas besoin d'effectuer une recherche, car l'utilisateur a déjà saisi un texte introuvable
+    if(searchTextLength >= 3) {
+
+        // L'utilisateur continue une saisie qui ne lui a déjà retourné aucun résultat, inutile de lancer la fonction de recherche
+        if(previousInputValue.length && previousInputValue.length < searchTextLength && !recipesSearched.length) return 
+
         recipesSearched = searchRecipes(searchText)
+
+        // Permet de checker à la prochaine saisie si l'utilisateur rajoute ou enlève du texte
+        previousInputValue = searchText
+
         createRecipesUpdateTags(recipesSearched, 'updated')
+
     } else {
         recipesSearched = []
         const recipesToSearchFrom = tagsSelectedElementArray.length ? recipesFiltered : recipes
