@@ -30,12 +30,12 @@ let tagsFromRecipes = {
 }
     
 // Permettra d'updater la liste de recettes à chaque fois qu'un filtre est ajouté/retiré
-let recipesFiltered = []
+let recipesFiltered = Object.assign([], recipes)
 
-/* Cette liste représente la liste filtrée par rapport aux tags sans prendre en compte la recherche principale
-Elle a pour but de pouvoir filtrer la liste via la recherche principales, tout en prenant en considération les tags
+/* Même rôle que la variable recipesSearchedWithoutTagsConstraint du module dédié à la recherche,
+mais cette fois-ci son intérêt est dans le cas où du texte de la recherche principale est enlevé
 */
-let recipesFilteredWithoutSearchConstraint = [] 
+let recipesFilteredWithoutSearchConstraint = Object.assign([], recipes)
 
 const inputsInitialValues = ['Ingrédients', 'Appareils', 'Ustensils']
 
@@ -161,24 +161,27 @@ function setFilterDropdownsBehaviour() {
                             
                             addTag(inputName, tagName)
 
+                            // La liste la moins longue est celle sur laquelle le dernier traitement à été effectué. On repart de cette liste.
+                            const recipesToSearchFrom = recipesSearched.length < recipesFiltered.length ? recipesSearched : recipesFiltered
+
                             /* Ce check permet de ne pas lancer de filtre s'il y a déjà au moins un tag de séléctionné
                                 et que la liste de recette filtres est vide, car cela veut dire que la liste restera vide à l'ajout d'un nouveau tag
                             */
                             if(tagsSelectedNames.length < 2 || recipesFiltered.length) {
-
-                                const recipesToSearchFrom = searchInput.value && searchInput.value.length >= 3 ? recipesSearched : tagsSelectedElementArray.length > 1 ? recipesFiltered : recipes
+                                
 
                                 // Update la liste de recettes 
                                 recipesFiltered = filterRecipes(inputName, tagName, recipesToSearchFrom)
-                                if(recipesToSearchFrom.length === recipes.length) {
-                                    // Si la liste de départ est déjà la liste complète, pas besoin de relancer une recherche pour updater la liste obtenue sans considération de la recherche principale
-                                        recipesFilteredWithoutSearchConstraint = Object.assign([], recipesFiltered)
-                                    } else recipesFilteredWithoutSearchConstraint = filterRecipes(inputName, tagName, recipes)
-                                
+
                                 // Crée les recettes et les tags à afficher
                                 createRecipesUpdateTags(recipesFiltered, "updated")
                                                                 
                             } 
+
+                            // Si la liste de départ est la liste complète, alors il n'y a aucune recherche d'effectuée, les listes filtrées avec ou sans considération de la recherche sont donc les mêmes
+                            if(recipesToSearchFrom.length === recipes.length) recipesFilteredWithoutSearchConstraint = Object.assign([], recipesFiltered)                            
+                            // On intègre le tag pour filtrer la liste qui ne prend pas en compte la recherche principale
+                            else recipesFilteredWithoutSearchConstraint = filterRecipes(inputName, tagName, recipesFilteredWithoutSearchConstraint)
                         } 
                     } 
 
@@ -387,6 +390,7 @@ function setTagElementCloseBehaviour(tagElement, tagName) {
         
         // Puisque le tag est retiré, il faut updater la liste de recettes à afficher
         recipesFiltered = unfilterRecipes()
+
         // Crée les recettes et les tags à afficher
         createRecipesUpdateTags(recipesFiltered, 'initial')
 
@@ -440,11 +444,12 @@ function filterRecipesByIngredient(recipesToSearchFrom, tagName) {
 
         const ingredients = recipe.ingredients.map(ingredient => capitalizeString(ingredient.ingredient))
 
-        // On ajoute les ingrédients de la recette à la liste des tags contenus dans l'ensemble des recettes affichée
-        tagsFromRecipes['ingredients'] = tagsFromRecipes['ingredients'].concat(ingredients)
-
-        // On retient la recette si elle contient l'ingrédient correspondant au tag choisi par l'utilisateur
-        if(ingredients.includes(tagName)) recipesFound = recipesFound.concat(recipe) 
+        if(ingredients.includes(tagName)) {
+        // On retient la recette car elle contient l'ingrédient correspondant au tag choisi par l'utilisateur
+            recipesFound = recipesFound.concat(recipe) 
+            // On ajoute les ingrédients de la recette à la liste des tags contenus dans l'ensemble des recettes affichée
+            tagsFromRecipes['ingredients'] = tagsFromRecipes['ingredients'].concat(ingredients)            
+        } 
 
     }) 
 
@@ -465,11 +470,12 @@ function filterRecipesByAppliance(recipesToSearchFrom, tagName) {
     recipesToSearchFrom.forEach(recipe => {
 
         const appliance = capitalizeString(recipe.appliance)
-
-        // On ajoute l'appareil de la recette à la liste des tags contenus dans l'ensemble des recettes affichée
-        tagsFromRecipes['appliance'].push(appliance)
         
-        if(appliance === tagName) recipesFound = recipesFound.concat(recipe) 
+        if(appliance === tagName) {
+            recipesFound = recipesFound.concat(recipe) 
+            // On ajoute l'appareil de la recette à la liste des tags contenus dans l'ensemble des recettes affichée
+            tagsFromRecipes['appliance'].push(appliance)            
+        } 
 
     }) 
 
@@ -491,10 +497,11 @@ function filterRecipesByUstensil(recipesToSearchFrom, tagName) {
 
         const ustensils = recipe.ustensils.map(ustensil => capitalizeString(ustensil))
 
-        // On ajoute les ustensils de la recette à la liste des tags contenus dans l'ensemble des recettes affichée
-        tagsFromRecipes['ingredients'] = tagsFromRecipes['ingredients'].concat(ustensils)
-
-       if(ustensils.includes(tagName)) recipesFound = recipesFound.concat(recipe) 
+       if(ustensils.includes(tagName)) {
+            recipesFound = recipesFound.concat(recipe) 
+            // On ajoute les ustensils de la recette à la liste des tags contenus dans l'ensemble des recettes affichée
+            tagsFromRecipes['ustensils'] = tagsFromRecipes['ustensils'].concat(ustensils)            
+       } 
 
     }) 
 
@@ -511,16 +518,18 @@ function filterRecipesByUstensil(recipesToSearchFrom, tagName) {
 function unfilterRecipes() {
 
     /* Détermine quelle liste de recettes utiliser en point de départ 
-        Si l'utilisateur utilise la recherche principale, les recettes a afficher sont celles qui matchent la recherche
-        Sinon la liste totale de recettes sera utilisée
-        On n'utilise pas la liste filtrée par tags comme point de départ car aucune solution efficace trouvée
+        Si la liste est soumise à un critère de recherche, on récupère la liste résultante de la recherche
+        car inutile de parcourir les recettes qui de toute façon ne pourront pas être affichées en raison de la recherche
     */  
     let recipesToSearchFrom = searchInput.value && searchInput.value.length >= 3 ? recipesSearchedWithoutTagsConstraint : recipes
 
     let recipesFound = []
 
     // Le dernier tag vient d'être enlevé, donc pas de filtre à réaliser, on conserve juste la liste définie plus haut
-    if(!tagsSelectedElementArray.length) recipesFound = Object.assign([], recipesToSearchFrom)
+    if(!tagsSelectedElementArray.length) {
+        recipesFilteredWithoutSearchConstraint = Object.assign([], recipes) 
+        recipesFound = Object.assign([], recipesToSearchFrom)
+    } 
 
     else {
     // Il y a au moins un tag, il faut donc effectuer un filtre par tag 
@@ -528,13 +537,26 @@ function unfilterRecipes() {
         // On parcourt l'ensemble des tags sélectionnés par l'utilisateur
         tagsSelectedElementArray.forEach((tag, index) => {
             
-            /* S'il s'agit du 2ème tag ou plus, la liste de départ doit être la liste filtré car 
+            const tagName = tag.textContent.trim()
+
+            /* S'il s'agit du 2ème tag ou plus, la liste de départ doit être la liste filtrée car 
                 cela veut dire que la liste de recettes a déjà été filtrée par le premier tag
             */
-            if(index > 0) recipesToSearchFrom = Object.assign([], recipesFiltered) 
-            if(tag.classList.contains('tag--ingredients')) recipesFound = filterRecipesByIngredient(recipesToSearchFrom, tag.textContent.trim())
-            else if (tag.classList.contains('tag--appliance')) recipesFound = filterRecipesByAppliance(recipesToSearchFrom, tag.textContent.trim())
-            else recipesFound = filterRecipesByUstensil(recipesToSearchFrom, tag.textContent.trim())
+            if(index > 0) recipesToSearchFrom = Object.assign([], recipesFound) 
+
+            if(tag.classList.contains('tag--ingredients')) {
+                recipesFound = filterRecipesByIngredient(recipesToSearchFrom, tagName)
+                recipesFilteredWithoutSearchConstraint = filterRecipesByIngredient(recipes, tagName)
+            } 
+            else if (tag.classList.contains('tag--appliance')) {
+                recipesFound = filterRecipesByAppliance(recipesToSearchFrom, tagName)
+                recipesFilteredWithoutSearchConstraint = filterRecipesByAppliance(recipes, tagName)
+            } 
+            else {
+                recipesFound = filterRecipesByUstensil(recipesToSearchFrom, tagName)
+                recipesFilteredWithoutSearchConstraint = filterRecipesByUstensil(recipes, tagName)
+            } 
+
         }) 
     }
 
@@ -690,4 +712,4 @@ function capitalizeString(text) {
 }
 
 
-export { setFilterDropdownsBehaviour, setFilterDropdownInputBehaviour, createRecipesUpdateTags, recipesFilteredWithoutSearchConstraint, tagsSelectedElementArray }
+export { setFilterDropdownsBehaviour, setFilterDropdownInputBehaviour, createRecipesUpdateTags, recipesFiltered, recipesFilteredWithoutSearchConstraint, tagsSelectedElementArray }
