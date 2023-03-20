@@ -145,44 +145,28 @@ function getRecipesAndTagsToUse(searchText) {
 */
 function searchRecipes(searchText, recipesToSearchFrom) {
 
-   const regexToMatch = new RegExp('\(\\s\|\^\)' + searchText, 'i')
-   
-   let recipesFound = []
-    for(let recipe of recipesToSearchFrom) {
+    const regexToMatch = new RegExp('\(\\s\|\^\)' + searchText, 'i')
 
+    const recipesFound = recipesToSearchFrom.reduce((listOfRecipes, recipe) => {
+        
+        // Le titre ou la description contiennent le mot recherché, on peut récupérer cette recette et arrêter la procédure
         if(recipe.name.match(regexToMatch) || recipe.description.match(regexToMatch)) {
-        // Si le titre ou la description de la recette contient le texte recherché, la recette peut être affichée et pas besoin de vérifier les autres informations 
-            recipesFound.push(recipe)
-            continue 
+            listOfRecipes.push(recipe)
+            return listOfRecipes
+        } 
+        
+        // Récupère et regroupe tous les ingrédients dans un seul string
+        recipe.ingredients.every(ingredient => {
+            if(ingredient.ingredient.match(regexToMatch)) {
+                listOfRecipes.push(recipe)
+                return false
+            }
+            return true
+        })
 
-        } else {
-        // Ni le titre ni la description ne matchent le texte recherché, on vérifie alors dans les ingrédients de la recette
+        return listOfRecipes
 
-            let recipeMatched = false,
-                position = 0
-                const ingredients = recipe.ingredients
-
-            /* Boucle sur chaque ingrédient
-            La boucle continue jusqu'à qu'on trouve un ingrédient matchant la recherche 
-            ou que la liste d'ingrédients ait été parcourue au complet
-            */
-            do {
-                const ingredient = ingredients[position].ingredient
-
-                if(ingredient.match(regexToMatch)) {
-                // L'ingrédient matche le texte recherché, on peut arrêter la boucle
-                    recipesFound.push(recipe)
-                    recipeMatched = true
-                } else {
-                // On passe à l'ingrédient suivant
-                    position++
-                }
-
-            } while (recipeMatched === false && position < ingredients.length) 
-
-        }
-
-    }
+    }, [])
 
     return recipesFound
 
