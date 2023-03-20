@@ -3,9 +3,9 @@
 /** **************************** MODULES **************************************** */
 /** ******************************************************************** */
 
-import { search } from "./index.js"
 import recipes from "../../../data/recipes.js"
 import { createRecipes } from "../../templates/recipes.js"
+import { searchInput, recipesSearchedWithoutTagsConstraint, recipesSearched } from "./search.js"
 
 
 /** **************************** PROCEDURES **************************************** */
@@ -31,6 +31,11 @@ let tagsFromRecipes = {
     
 // Permettra d'updater la liste de recettes à chaque fois qu'un filtre est ajouté/retiré
 let recipesFiltered = []
+
+/* Cette liste représente la liste filtrée par rapport aux tags sans prendre en compte la recherche principale
+Elle a pour but de pouvoir filtrer la liste via la recherche principales, tout en prenant en considération les tags
+*/
+let recipesFilteredWithoutSearchConstraint = [] 
 
 const inputsInitialValues = ['Ingrédients', 'Appareils', 'Ustensils']
 
@@ -161,8 +166,15 @@ function setFilterDropdownsBehaviour() {
                             */
                             if(tagsSelectedNames.length < 2 || recipesFiltered.length) {
 
+                                const recipesToSearchFrom = searchInput.value && searchInput.value.length >= 3 ? recipesSearched : tagsSelectedElementArray.length > 1 ? recipesFiltered : recipes
+
                                 // Update la liste de recettes 
-                                recipesFiltered = filterRecipes(inputName, tagName)
+                                recipesFiltered = filterRecipes(inputName, tagName, recipesToSearchFrom)
+                                if(recipesToSearchFrom.length === recipes.length) {
+                                    // Si la liste de départ est déjà la liste complète, pas besoin de relancer une recherche pour updater la liste obtenue sans considération de la recherche principale
+                                        recipesFilteredWithoutSearchConstraint = Object.assign([], recipesFiltered)
+                                    } else recipesFilteredWithoutSearchConstraint = filterRecipes(inputName, tagName, recipes)
+                                
                                 // Crée les recettes et les tags à afficher
                                 createRecipesUpdateTags(recipesFiltered, "updated")
                                                                 
@@ -390,17 +402,7 @@ function setTagElementCloseBehaviour(tagElement, tagName) {
     Renvoie :
         - Une liste de recettes
 */
-function filterRecipes(inputName, tagName) {
-
-    /* Détermine sur quelle liste de recettes effectuer le filtre 
-        Si l'utilisateur utilise la recherche principale, les recettes a afficher sont celles qui matchent la recherche
-        Si l'utilisateur n'a pas utilisé la recherche principale mais sélectionné un tag, les recettes à afficher
-        sont celles contenant l'ensemble des tags
-        Si ni la recherche principale ni tags n'ont été utilisés, alors on la liste totale de recettes sera utilisée
-        Cela permet d'effectuer le filtre à partir de la dernière liste de recette connue, 
-        et donc d'éviter de filtrer la liste initiale de recettes à chaque ajout de tags
-    */
-    const recipesToSearchFrom = search.searchInput.value >= 3 ? search.recipesSearched : tagsSelectedElementArray.length > 1 ? recipesFiltered : recipes
+function filterRecipes(inputName, tagName, recipesToSearchFrom) {
     
     let recipesFound = []
     switch(inputName) {
@@ -513,7 +515,7 @@ function unfilterRecipes() {
         Sinon la liste totale de recettes sera utilisée
         On n'utilise pas la liste filtrée par tags comme point de départ car aucune solution efficace trouvée
     */  
-    let recipesToSearchFrom = search.searchInput.value >= 3 ? search.recipesSearched : recipes
+    let recipesToSearchFrom = searchInput.value && searchInput.value.length >= 3 ? recipesSearchedWithoutTagsConstraint : recipes
 
     let recipesFound = []
 
@@ -688,4 +690,4 @@ function capitalizeString(text) {
 }
 
 
-export { setFilterDropdownsBehaviour, setFilterDropdownInputBehaviour, createRecipesUpdateTags, recipesFiltered, tagsSelectedElementArray }
+export { setFilterDropdownsBehaviour, setFilterDropdownInputBehaviour, createRecipesUpdateTags, recipesFilteredWithoutSearchConstraint, tagsSelectedElementArray }

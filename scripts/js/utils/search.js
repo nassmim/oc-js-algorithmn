@@ -4,15 +4,23 @@
 /** ******************************************************************** */
 
 import recipes from "../../../data/recipes.js"
+import { createRecipesUpdateTags, recipesFilteredWithoutSearchConstraint, tagsSelectedElementArray } from "./filters.js"
 
-import { createRecipesUpdateTags, recipesFiltered, tagsSelectedElementArray } from "./filters.js"
+/** **************************** PROCÉDURES **************************************** */
+/** ******************************************************************** */
 
 let recipesSearched = []
+
+/* Cette liste représente la liste filtrée par rapport à la recherche principale sans prendre en compte les tags sélectionnés.  
+Elle a pour but de pouvoir filtrer la liste lorsqu'un tag est retiré, tout en prenant en considération la recherche principale
+*/
+let recipesSearchedWithoutTagsConstraint = [] 
 
 const searchInput = document.querySelector('.search-main__input'),
     searchInputIcon = document.querySelector('.search-main__icon')
 
-
+/* Sert de sauvegarde de la dernière saisie de l'utilisateur, et permet de checker
+à la prochaine saisie si l'utilisateur rajoute ou enlève du texte */
 let previousInputValue = ""
 
 searchInput.addEventListener('input', () => {
@@ -24,19 +32,29 @@ searchInput.addEventListener('input', () => {
 
     if(searchTextLength >= 3) {
 
-        // L'utilisateur continue une saisie qui ne lui a déjà retourné aucun résultat, inutile de lancer la fonction de recherche
-        if(previousInputValue.length && previousInputValue.length < searchTextLength && !recipesSearched.length) return 
+        // Récupère la liste de recettes à partir de laquelle effectuer la recherche
+        const recipesAndTagsToUse = getRecipesAndTagsToUse(searchText),
+            recipesToSearchFrom = recipesAndTagsToUse.recipes,
+            tagsToShowKeyToUse = recipesAndTagsToUse.tags
 
-        recipesSearched = searchRecipes(searchText)
-
-        // Permet de checker à la prochaine saisie si l'utilisateur rajoute ou enlève du texte
         previousInputValue = searchText
 
-        createRecipesUpdateTags(recipesSearched, 'updated')
+        // Il n'est pas utile de lancer une recherche sur une liste vide
+        if(!recipesToSearchFrom.length) return 
+        else {
+            recipesSearched = searchRecipes(searchText, recipesToSearchFrom)
+
+            if(recipesToSearchFrom.length === recipes.length) {
+            // Si la liste de départ est déjà la liste complète, pas besoin de relancer une recherche pour updater la liste obtenue sans considération des tags
+                recipesSearchedWithoutTagsConstraint = Object.assign([], recipesSearched)
+            } else recipesSearchedWithoutTagsConstraint = searchRecipes(searchText, recipes)
+        }
+
+        createRecipesUpdateTags(recipesSearched, tagsToShowKeyToUse)
 
     } else {
         recipesSearched = []
-        const recipesToSearchFrom = tagsSelectedElementArray.length ? recipesFiltered : recipes
+        const recipesToSearchFrom = tagsSelectedElementArray.length ? recipesFilteredWithoutSearchConstraint : recipes
         createRecipesUpdateTags(recipesToSearchFrom, 'initial')
 
     }
@@ -44,22 +62,65 @@ searchInput.addEventListener('input', () => {
 })
 
 
+/* Détermine quelle est la liste de recettes sur laquelle appliquer la recherche principale
+L'idée est ici que si les recettes ont déjà subi un filtre suite à l'ajout d'un tag ou une recherche, 
+alors on peut repartir de cette liste pour que la recherche soit plus rapide
+    Paramètres :
+        - La saisie dans le champ de recherche
+    Renvoie :
+        - Une liste de recettes
+*/
+function getRecipesAndTagsToUse(searchText) {
 
-function searchRecipes(searchText) {
+    const previousInputValueLength = previousInputValue.length
 
-    /* Détermine sur quelle liste de recettes effectuer la recherche  
-        Si l'utilisateur a déjà activé la recherche principale, alors la recherche doit s'effectuer sur les recettes trouvées
-        Si la recherche principale n'a pas encore été déclenchée mais au moins a été choisi par l'utilisateur, 
-        les recettes à afficher sont celles contenant l'ensemble des tags
-        Si ni la recherche principale ni tags n'ont été utilisés, alors on la liste totale de recettes sera utilisée
-        Cela permet d'effectuer la recherche à partir de la dernière liste de recettes obtenue, 
-        et donc d'éviter de rechercher parmi la liste initiale de recettes à chaque input
-    */     
-    const recipesToSearchFrom = searchInput.value > 3 ? recipesSearched : tagsSelectedElementArray.length ? recipesFiltered : recipes
+    let recipesAndTagsToUse = {
+        'recipes': [],
+        'tags': []
+    }
 
-    const regexToMatch = new RegExp('\(\\s\|\^\)' + searchText, 'i')
 
-    let recipesFound = []
+    if(previousInputValueLength && previousInputValueLength < searchText.length) {
+    /* L'utilisateur a déjà saisi du texte ayant activé la recherche, et rajoute du texte. 
+    On peut donc partir de la liste obtenue lors de la précédente recherche
+    */
+
+        if(!recipesSearched.length) recipesAndTagsToUse.recipes = []
+        else {
+            recipesAndTagsToUse.recipes = recipesSearched
+            recipesAndTagsToUse.tags = 'updated'
+        } 
+
+    } else {
+    /* L'utilisateur n'avait pas encore saisi de texte activant la recherche ou est en train de supprimer du texte de sa saisie. 
+    On ne peut pas repartir des résultats de la recherche précédente
+    */
+        // On récupère la liste filtrée par tag si au moins un tag a été choisi par l'utilisateur, sinon la liste complète de recettes
+        recipesAndTagsToUse.recipes = tagsSelectedElementArray.length ? recipesFilteredWithoutSearchConstraint : recipes
+        recipesAndTagsToUse.tags = 'updated'
+
+        if(previousInputValueLength) {
+            recipesAndTagsToUse.tags = 'initial'
+        }
+    } 
+
+    return recipesAndTagsToUse
+
+}
+
+
+/* Filtre les recettes qui matchent le texte saisi dans la recherche principale
+    Paramètres :
+        - La saisie dans le champ de recherche
+        - Une liste de recettes sur laquelle effectuer la recette
+    Renvoie :
+        - Une liste de recettes
+*/
+function searchRecipes(searchText, recipesToSearchFrom) {
+
+   const regexToMatch = new RegExp('\(\\s\|\^\)' + searchText, 'i')
+   
+   let recipesFound = []
     for(let recipe of recipesToSearchFrom) {
 
         if(recipe.name.match(regexToMatch) || recipe.description.match(regexToMatch)) {
@@ -101,4 +162,4 @@ function searchRecipes(searchText) {
 }
 
 
-export { searchRecipes, searchInput, recipesSearched }
+export { searchRecipes, searchInput, recipesSearched, recipesSearchedWithoutTagsConstraint }
