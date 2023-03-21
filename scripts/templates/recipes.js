@@ -1,39 +1,33 @@
 // --------------- FICHIER QUI GERE L'UI DES CARTES DE RECETTES ---------------
 
-const recipesElement = document.querySelector('.recipes'),
-    noRecipesElement = document.querySelector('.no-recipes')
+const recipesElement = document.querySelector('.recipes');
+const noRecipesElement = document.querySelector('.no-recipes');
 
 function createRecipes(recipes) {
-
     // Pas d'event handler sur les cartes de recettes, on peut vider la liste de recettes comme ça
-    recipesElement.innerHTML = ""
+    recipesElement.innerHTML = '';
 
-    if(recipes.length) {
+    if (recipes.length) {
+        noRecipesElement.classList.remove('no-recipes--visible');
 
-        noRecipesElement.classList.remove('no-recipes--visible')
-    
-        recipes.forEach(recipe => {
-    
-            const recipeArticle = document.createElement('article')
-            recipeArticle.classList.add('card')
-        
-            const recipeElementsHTML = createRecipeElements(recipe)
-        
-            recipeArticle.insertAdjacentHTML('beforeend', recipeElementsHTML)
-            
-            createListOfIngredientsElement(recipe, recipeArticle)
-    
-            recipesElement.appendChild(recipeArticle)
-        })
+        recipes.forEach((recipe) => {
+            const recipeArticle = document.createElement('article');
+            recipeArticle.classList.add('card');
 
+            const recipeElementsHTML = createRecipeElements(recipe);
+
+            recipeArticle.insertAdjacentHTML('beforeend', recipeElementsHTML);
+
+            createListOfIngredientsElement(recipe, recipeArticle);
+
+            recipesElement.appendChild(recipeArticle);
+        });
     } else {
-        noRecipesElement.classList.add('no-recipes--visible')
+        noRecipesElement.classList.add('no-recipes--visible');
     }
 }
 
-
 function createRecipeElements(recipe) {
-
     const article = `
 
         <header class="card__header">
@@ -74,47 +68,37 @@ function createRecipeElements(recipe) {
             <p class="card__cooking-steps">${recipe.description}</p>
 
         </div>
-    `
+    `;
 
-    return article
+    return article;
 }
-
 
 function createListOfIngredientsElement(recipe, recipeArticle) {
-
-    const listOfIngredientsElement = recipeArticle.querySelector('.card__ingredients')
-    recipe.ingredients.forEach(ingredient => {
-        const ingredientElement = createIngredientElement(ingredient)
-        listOfIngredientsElement.insertAdjacentHTML('beforeend', ingredientElement)
-    })
-
+    const listOfIngredientsElement = recipeArticle.querySelector('.card__ingredients');
+    recipe.ingredients.forEach((ingredient) => {
+        const ingredientElement = createIngredientElement(ingredient);
+        listOfIngredientsElement.insertAdjacentHTML('beforeend', ingredientElement);
+    });
 }
 
-
 function createIngredientElement(ingredient) {
-
     let ingredientElement;
-    if(ingredient.quantity) {
-
+    if (ingredient.quantity) {
         ingredientElement = `
             <li class="card__ingredient-item">
                 <span class="card__ingredient-name">${ingredient.ingredient} : </span> 
-                ${ingredient.quantity} ${ingredient.unit ? ingredient.unit : ""}
+                ${ingredient.quantity} ${ingredient.unit ? ingredient.unit : ''}
             </li>
-        ` 
-
+        `;
     } else {
-
         ingredientElement = `
             <li class="card__ingredient-item">
                 <span class="card__ingredient-name">${ingredient.ingredient}</span> 
             </li>
-        `
-                  
+        `;
     }
 
-
-    return ingredientElement
+    return ingredientElement;
 }
 
-export { createRecipes }
+export default createRecipes;

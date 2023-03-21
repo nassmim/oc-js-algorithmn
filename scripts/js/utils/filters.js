@@ -4,7 +4,7 @@
 /** ******************************************************************** */
 
 import recipes from '../../../data/recipes.js';
-import { createRecipes } from '../../templates/recipes.js';
+import createRecipes from '../../templates/recipes.js';
 import { searchInput, recipesSearchedWithoutTagsConstraint, recipesSearched } from './search.js';
 
 /** **************************** PROCEDURES **************************************** */

@@ -11,5 +11,5 @@ import { filters } from '../utils/index.js';
 /** **************************** PROCÉDURES **************************************** */
 /** ******************************************************************** */
 
-createRecipes(recipes)
-filters.setFilterDropdownsBehaviour()
+createRecipes(recipes);
+filters.setFilterDropdownsBehaviour();
