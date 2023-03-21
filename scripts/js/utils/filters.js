@@ -55,7 +55,8 @@ const initialTags = {
     ustensils: ustensilsTags,
 };
 
-// Permettra d'updater la liste de tags que l'utilisateur peut choisir en fonction des recettes affichées
+// Permettra d'updater la liste de tags que l'utilisateur peut choisir en fonction des recettes
+// affichées
 const tagsToShow = { ...initialTags };
 
 const tagsToUse = {
@@ -76,8 +77,8 @@ et associés à un type de tags déterminé.
 function getAllTags(tagType) {
     const tags = recipes.reduce((tagsList, recipe) => {
         // Récupère les tags associés au bon type ingrédients, etc.
-        const tags = getRightTypeTags(recipe, tagType);
-        return tagsList.concat(tags);
+        const tagsPerTagType = getRightTypeTags(recipe, tagType);
+        return tagsList.concat(tagsPerTagType);
     }, []);
 
     const tagsWithoutDuplicates = [...new Set(tags)];
@@ -109,7 +110,8 @@ function getRightTypeTags(recipe, tagType) {
         tags = recipe.appliance;
     }
 
-    // On capitalise les tags et on s'assure que le reste est en minuscule; nécessaire d'uniformiser pour effectuer des comparaisons futures
+    // On capitalise les tags et on s'assure que le reste est en minuscule; nécessaire d'uniformiser
+    // pour effectuer des comparaisons futures
     const listOfTags = Array.isArray(tags) ? tags : [tags];
     const listOfTagsCapitalized = listOfTags.map((tag) => capitalizeString(tag));
 
@@ -385,7 +387,7 @@ function filterRecipes(inputName, tagName, recipesToSearchFrom) {
         recipesFound = filterRecipesByAppliance(recipesToSearchFrom, tagName);
         break;
 
-    case 'ustensils':
+    default:
         recipesFound = filterRecipesByUstensil(recipesToSearchFrom, tagName);
         break;
     }

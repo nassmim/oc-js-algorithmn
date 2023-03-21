@@ -11,6 +11,12 @@
         "sourceType": "module"
     },
     "rules": {
-        "indent": ["error", 4]
+        "indent": ["error", 4],
+        "max-len": "off",
+        "no-use-before-define": "warn",
+        "import/no-cycle": "off",
+        "import/extensions": "off",
+        "import/no-mutable-exports": "warn",      
+        "no-param-reassign": "warn",
     }
 }
