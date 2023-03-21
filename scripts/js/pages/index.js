@@ -3,13 +3,13 @@
 /** **************************** MODULES **************************************** */
 /** ******************************************************************** */
 
-import { createRecipes } from "../../templates/recipes.js";
+import createRecipes from '../../templates/recipes.js';
 
-import recipes from "../../../data/recipes.js"
-import { filters, search } from "../utils/index.js";
+import recipes from '../../../data/recipes.js';
+import { filters } from '../utils/index.js';
 
 /** **************************** PROCÉDURES **************************************** */
 /** ******************************************************************** */
 
-createRecipes(recipes)
-filters.setFilterDropdownsBehaviour()
+createRecipes(recipes);
+filters.setFilterDropdownsBehaviour();

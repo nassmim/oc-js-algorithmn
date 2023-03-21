@@ -16,7 +16,8 @@
         "no-use-before-define": "warn",
         "import/no-cycle": "off",
         "import/extensions": "off",
-        "import/no-mutable-exports": "warn",      
-        "no-param-reassign": "warn"
+        "import/no-mutable-exports": "off",      
+        "no-param-reassign": "warn",
+        "no-continue": "off",
     }
 }
