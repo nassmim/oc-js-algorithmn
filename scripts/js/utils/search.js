@@ -35,7 +35,7 @@ searchInput.addEventListener('input', () => {
     const searchText = searchInput.value;
     const searchTextLength = searchText.length;
 
-    if(searchTextLength) searchInputIcon.style.opacity = 0;
+    if (searchTextLength) searchInputIcon.style.opacity = 0;
     else searchInputIcon.style.opacity = 1;
 
     if (searchTextLength >= 3) {
@@ -130,7 +130,7 @@ function getRecipesAndTagsToUse(searchText) {
         - Une liste de recettes
 */
 function searchRecipes(searchText, recipesToSearchFrom) {
-    const regexToMatch = new RegExp(`\(\\s\|\^\)${searchText}`, 'i');
+    const regexToMatch = new RegExp(`(\\s|^)${searchText}`, 'i');
 
     const recipesFound = recipesToSearchFrom.reduce((listOfRecipes, recipe) => {
         // Le titre ou la description contiennent le mot recherché, on peut récupérer cette recette et arrêter la procédure

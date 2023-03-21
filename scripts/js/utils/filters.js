@@ -593,7 +593,7 @@ function setFilterDropdownInputBehaviour(inputElement, tagElements) {
         if (inputValue.length >= 3) {
         // L'utilisateur a tapé plus de trois lettres, on estime que c'est pertinent de lancer la recherche des tags
 
-            const regexToMatch = new RegExp(`\^${inputValue}`, 'i');
+            const regexToMatch = new RegExp(`${inputValue}`, 'i');
             // const matchedTags = tagsToShow[inputName].filter(tag => tag.includes(inputValue))
             // const matchedTagElements = filterTags(tagsToDisplay, regexToMatch, true)
             // const unmatchedTagElements = filterTags(tagsToDisplay, regexToMatch, false)

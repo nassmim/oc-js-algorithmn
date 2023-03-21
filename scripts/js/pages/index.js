@@ -3,7 +3,7 @@
 /** **************************** MODULES **************************************** */
 /** ******************************************************************** */
 
-import { createRecipes } from '../../templates/recipes.js';
+import createRecipes from '../../templates/recipes.js';
 
 import recipes from '../../../data/recipes.js';
 import { filters } from '../utils/index.js';
